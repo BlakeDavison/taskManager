@@ -5,51 +5,42 @@ var wagner = require('wagner-core');
 
 var URL_ROOT = 'http://localhost:3000';
 
-describe('API', function(){
+describe('User API', function(){
   var server;
-  var Task;//the variable will hold the model for testing
+  var User;
 
   before(function()
-  {//initial server setup
+  {//Inital server setup
     var app = express();
-    //import the api and the mongoose models
+
     models = require('../models/models')(wagner);
     app.use(require('../api')(wagner));
 
     server = app.listen(3000);
-    //make the models avalible
-    Task = models.Task;
+    //Make the models avalible for the tests
+    User = models.User;
   });
 
   after(function()
-  {
-    //End the server at the End
+  {//closes server when we are done
     server.close();
   });
 
   beforeEach(function(done)
-  {//empty the DB to make sure each test starts new
-    Task.remove({}, function(err)
+  {
+    User.remove({}, function(err)
     {
       assert.ifError(err);
       done();
     });
   });
 
-  it('load user by id', function(done)
+  it('load a user by ID', function(done)
   {
-    //create a task
-    var USER_ID = '000000000000000000000001';
-    var user =
-    {
-      name:'some one',
-      _id: TASK_ID
-    };
-    User.create(user, function(err, res)
+    User.create({_id:13, name:'some one'}, function(err, doc)
     {
       assert.ifError(err);
-      var url = URL_ROOT + '/task/id/' + TASK_ID;
-      //superagent makes a HTTP request to the above URL
+      var url = URL_ROOT + '/user/id/13';
       superagent.get(url, function(err, res)
       {
         assert.ifError(err);
@@ -58,11 +49,11 @@ describe('API', function(){
         {
           result = JSON.parse(res.text);
         });
-        assert.ok(result.task);
-        assert.equal(result.task._id. TASK_ID);
-        assert.equal(result.task.name, 'some one');
+        assert.ok(result.user);
+        assert.equal(result.user._id, 13);
         done();
       });
     });
   });
+
 });
