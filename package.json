@@ -1,7 +1,7 @@
 {
   "name": "nodejs",
   "version": "1.0.0",
-  "description": "Task Manager",
+  "description": "basic templet",
   "main": "index.js",
   "scripts": {
     "test": "mocha test/test.js"

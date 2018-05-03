@@ -1,59 +1,57 @@
 var express = require('express');
 var status = require('http-status');
 
-module.exports = function(wagner) {//uses wagner to pass a subrouter
+module.exports = function(wagner)
+{//passes a subrouter through wagner
   var api = express.Router();
-
-  api.get('/product/id/:id', wagner.invoke(function(Product) {
-    return function(req, res) {
-      Product.findOne({ _id: req.params.id },
-        handleOne.bind(null, 'product', res));
-    };
-  }));
-
-  api.get('/product/category/:id', wagner.invoke(function(Product) {
-    return function(req, res) {
-      var sort = { name: 1 };
-      if (req.query.price === "1") {
-        sort = { 'internal.approximatePriceUSD': 1 };
-      } else if (req.query.price === "-1") {
-        sort = { 'internal.approximatePriceUSD': -1 };
+  api.get('/task/id/:id', wagner.invoke(function(task)
+  {
+    return function(req, res)
+    {
+      var sort = {name:1};
+      if(req.query.name === "1")
+      {
+        sort = {'internal.name':1}
       }
-
-      Product.
-        find({ 'category.ancestors': req.params.id }).
+      else
+      {
+        sort = {'internal.name':-1}
+      }
+      Task.
         sort(sort).
-        exec(handleMany.bind(null, 'products', res));
+        exec(handleMany.bind(null, 'tasks', res));
     };
   }));
-
   return api;
 };
 
-function handleOne(property, res, error, result) {
-  if (error) {
+function handleOne(property, res, err, result)
+{
+  if(err)
+  {
     return res.
       status(status.INTERNAL_SERVER_ERROR).
-      json({ error: error.toString() });
+      json({error:err.toString()});
   }
-  if (!result) {
+  if(!result)
+  {
     return res.
       status(status.NOT_FOUND).
-      json({ error: 'Not found' });
+      json({error: 'Not found'});
   }
-
   var json = {};
   json[property] = result;
   res.json(json);
 }
 
-function handleMany(property, res, error, result) {
-  if (error) {
+function handleMany(property, res, err, result)
+{
+  if(err)
+  {
     return res.
       status(status.INTERNAL_SERVER_ERROR).
-      json({ error: error.toString() });
+      json({error:err.toString()});
   }
-
   var json = {};
   json[property] = result;
   res.json(json);

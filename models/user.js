@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 //creates the schema for validation for the category collection
-var categorySchema = {
+var userSchema = {
+  _id:{type:Number, required:true},
   username: {
     type: String,
     required: true
@@ -10,5 +11,5 @@ var categorySchema = {
   }
 };
 
-module.exports = new mongoose.Schema(categorySchema);
-module.exports.categorySchema = categorySchema;
+module.exports = new mongoose.Schema(userSchema);
+module.exports.userSchema = userSchema;
