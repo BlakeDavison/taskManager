@@ -5,7 +5,7 @@ var wagner = require('wagner-core');
 
 var URL_ROOT = 'http://localhost:3000';
 
-describe('Task API', function(){
+describe('API', function(){
   var server;
   var Task;//the variable will hold the model for testing
 
@@ -36,16 +36,16 @@ describe('Task API', function(){
     });
   });
 
-  it('can load a task by id', function(done)
+  it('load user by id', function(done)
   {
     //create a task
-    var TASK_ID = '000000000000000000000001';
-    var task =
+    var USER_ID = '000000000000000000000001';
+    var user =
     {
-      name:'some thing',
+      name:'some one',
       _id: TASK_ID
     };
-    Task.create(task, function(err, res)
+    User.create(user, function(err, res)
     {
       assert.ifError(err);
       var url = URL_ROOT + '/task/id/' + TASK_ID;
@@ -60,7 +60,7 @@ describe('Task API', function(){
         });
         assert.ok(result.task);
         assert.equal(result.task._id. TASK_ID);
-        assert.equal(result.task.name, 'some thing');
+        assert.equal(result.task.name, 'some one');
         done();
       });
     });
