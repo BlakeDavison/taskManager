@@ -10,4 +10,4 @@ var projectSchema = {//basic schema build for validation
 var schema = new mongoose.Schema(projectSchema);
 
 module.exports = schema;
-module.exports.productSchema = projectSchema;
+module.exports.projectSchema = projectSchema;

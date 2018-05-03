@@ -5,7 +5,7 @@ module.exports = function(wagner) {
   mongoose.connect('mongodb://localhost:27017/test');
 //pull in the models form their respective files
   var User = mongoose.model('User', require('./user'), 'user');
-  var Product = mongoose.model('Project', require('./project'), 'project');
+  var Project = mongoose.model('Project', require('./project'), 'project');
   var Task = mongoose.model('Task', require('./task'), 'task');
 //register them for reference
   var models = {
@@ -20,6 +20,5 @@ module.exports = function(wagner) {
       return value;
     });
   });
-
   return models;
 };

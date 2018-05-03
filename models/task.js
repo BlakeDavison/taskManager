@@ -10,14 +10,14 @@ var taskSchema = {
     type:String,
     enum:['IDed', 'Assigned', 'Start', 'Done'],
     default:'IDed'
-  }
-  assigned: type:Number,
-  projectName: type:Number,
+  },
+  assigned: {type:Number},
+  projectName: {type:Number},
   description: {type:String},
   dependentTasks:[{type:Number, ref:'task'}]
 };
 
-var schema = new mongoose.Schema(productSchema);
+var schema = new mongoose.Schema(taskSchema);
 
 module.exports = schema;
 module.exports.taskSchema = taskSchema;
