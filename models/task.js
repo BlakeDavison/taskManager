@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var taskSchema = {
   _id:{type:Number, required: true},
   name:{type:String, required: true},
-  due:{type:DATE},
+  due:{type:Date},
   person:{type:Number},
   tDepend:[{type:Number}],
   progress:{
