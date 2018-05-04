@@ -8,8 +8,17 @@ module.exports = function(wagner)
   var User = mongoose.model('User', require('./user'), 'user');
   var Task = mongoose.model('Task', require('./task'), 'user');
 
-  wagner.factory('User', function(){
-      return User;
+  var models = {
+    User: User,
+    Task: Task
+  };
+
+});
+  _.each(models, function(value, key)
+  {
+    wagner.factory('User', function(){
+        return User;
+    });
   });
-  return {User:User};
+  return models;
 };
