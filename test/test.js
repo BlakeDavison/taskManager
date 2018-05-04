@@ -34,7 +34,7 @@ describe('User API', function(){
       done();
     });
   });
-
+//this will test the basics of the user schema in the db
   it('load a user by ID', function(done)
   {
     User.create({_id:13, name:'some one'}, function(err, doc)
@@ -55,5 +55,5 @@ describe('User API', function(){
       });
     });
   });
-
+  
 });
