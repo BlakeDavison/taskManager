@@ -91,10 +91,10 @@ describe('API', function(){
 //this will test the basics of the project schema in the db
   it('loads a project by id', function(done)
   {
-    Project.create({_id:4,name:'important'}, function(err, doc)
+    Project.create({_id:7,name:'important'}, function(err, doc)
     {
       assert.ifError(err);
-      var url = URL_ROOT + '/project/id/4';
+      var url = URL_ROOT + '/project/id/7';
       superagent.get(url,function(err, res)
       {
         assert.ifError(err);
@@ -104,7 +104,33 @@ describe('API', function(){
           result = JSON.parse(res.text);
         });
         assert.ok(result.project);
-        assert.equal(result.project._id, 4);
+        assert.equal(result.project._id, 7);
+        done();
+      });
+    });
+  });
+//this will test the ability to get the person id from a taskSchema
+  it('loads all the task that are assigned to one person', function(done)
+  {
+    var tasksHold = [
+      {_id:1, name:'one', person:10},
+      {_id:3, name:'three', person:11},
+      {_id:4, name:'four'}
+    ];
+    Task.create(tasksHold, function(err, task)
+    {
+      assert.ifError(err);
+      var url = URL_ROOT + '/task/person/10';
+      superagent.get(url,function(err, res)
+      {
+        assert.ifError(err);
+        var result;
+        assert.doesNotThrow(function()
+        {
+          result = JSON.parse(res.text);
+        });
+        assert.ok(result.task);
+        assert.equal(result.task._id, 1);
         done();
       });
     });

@@ -23,16 +23,16 @@ module.exports = function(wagner)
     };
   }));
 //this will get the id of the person assigned to task
-/*  api.get('/task/person/:id', wagner.invoke(function()
+api.get('/task/person/:id', wagner.invoke(function(Task)
+{
+  return function(req, res)
   {
-    return function(req, res)
-    {
-      var sort = {name:1};
-
-    };
-  }));*/
-//This will get a task by ID
-  api.get('/project/id/:id', wagner.invoke(function(Project)
+    Task.findOne({person: req.params.id},
+      handleOne.bind(null, 'task', res));
+  };
+}));
+//This will get a project by ID
+api.get('/project/id/:id', wagner.invoke(function(Project)
   {
     return function(req, res)
     {
