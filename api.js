@@ -27,8 +27,10 @@ api.get('/task/person/:id', wagner.invoke(function(Task)
 {
   return function(req, res)
   {
-    Task.findOne({person: req.params.id},
-      handleOne.bind(null, 'task', res));
+    Task.
+      find({person: req.params.id}).
+      sort({name:1}).
+      exec(handleMany.bind(null,'tasks', res));
   };
 }));
 //This will get a project by ID

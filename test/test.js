@@ -114,6 +114,7 @@ describe('API', function(){
   {
     var tasksHold = [
       {_id:1, name:'one', person:10},
+      {_id:2, name:'two', person:10},
       {_id:3, name:'three', person:11},
       {_id:4, name:'four'}
     ];
@@ -129,8 +130,8 @@ describe('API', function(){
         {
           result = JSON.parse(res.text);
         });
-        assert.ok(result.task);
-        assert.equal(result.task._id, 1);
+        assert.ok(result.tasks[0]);
+        assert.equal(result.tasks[0]._id, 1);
         done();
       });
     });
