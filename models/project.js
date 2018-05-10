@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
 var User = require('./user');
-
+var Schema = mongoose.Schema;
 
 var projectSchema = {
 
   name:{type:String, required: true},
-  //user:User.userSchema,
+  user:{type:Schema.Types.ObjectId, ref:'User'},
   description:{type:String},
   due:{type:Date}
 };
