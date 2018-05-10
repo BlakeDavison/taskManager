@@ -1,10 +1,12 @@
 var mongoose = require('mongoose');
+var User = require('./user');
+var Schema = mongoose.Schema;
 
 var taskSchema = {
-  _id:{type:Number, required: true},
+
   name:{type:String, required: true},
   due:{type:Date},
-  person:{type:Number},
+  user:{type:Schema.Types.ObjectId, ref:'User'},
   tDepend:[{type:Number}],
   progress:{
     type:String,
@@ -12,6 +14,7 @@ var taskSchema = {
     default: 'IDed'//need to make this auto update when assigned
   }
 };
+var schema =  new mongoose.Schema(taskSchema);
 
-module.exports = new mongoose.Schema(taskSchema);
+module.exports = schema;
 module.exports.taskSchema = taskSchema;

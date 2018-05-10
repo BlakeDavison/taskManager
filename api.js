@@ -28,7 +28,8 @@ api.get('/task/person/:id', wagner.invoke(function(Task)
   return function(req, res)
   {
     Task.
-      find({person: req.params.id}).
+      find({user: req.params.id}).
+      populate('user').
       sort({name:1}).
       exec(handleMany.bind(null,'tasks', res));
   };
@@ -42,6 +43,7 @@ api.get('/project/id/:id', wagner.invoke(function(Project)
         handleOne.bind(null, 'project', res));
     };
   }));
+
   return api;
 };
 
@@ -72,6 +74,11 @@ function handleMany(property, res, err, result)
     return res.
       status(status.INTERNAL_SERVER_ERROR).
       json({error: err.toString()});
+  }
+  if (!result) {
+    return res.
+      status(status.NOT_FOUND).
+      json({ error: 'Not found' });
   }
   var json = {};
   json[property] = result;

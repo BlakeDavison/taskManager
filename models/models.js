@@ -5,9 +5,9 @@ module.exports = function(wagner)
 {
   mongoose.connect('mongodb://localhost:27017/test');
 
-  var User = mongoose.model('User', require('./user'), 'user');
-  var Task = mongoose.model('Task', require('./task'), 'task');
-  var Project = mongoose.model('Project', require('./project'), 'project');
+  var User = mongoose.model('User', require('./user'), 'users');
+  var Task = mongoose.model('Task', require('./task'), 'tasks');
+  var Project = mongoose.model('Project', require('./project'), 'projects');
 
   var models =
   {

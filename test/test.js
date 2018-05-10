@@ -49,10 +49,10 @@ describe('API', function(){
 //this will test the basics of the user schema in the db
   it('loads a user by ID', function(done)
   {
-    User.create({_id:13, name:'some one'}, function(err, doc)
+    User.create({_id:'50341373e894ad16347efe01', name:'some one'}, function(err, doc)
     {
       assert.ifError(err);
-      var url = URL_ROOT + '/user/id/13';
+      var url = URL_ROOT + '/user/id/50341373e894ad16347efe01';
       superagent.get(url, function(err, res)
       {
         assert.ifError(err);
@@ -62,7 +62,7 @@ describe('API', function(){
           result = JSON.parse(res.text);
         });
         assert.ok(result.user);
-        assert.equal(result.user._id, 13);
+        assert.equal(result.user._id, '50341373e894ad16347efe01');
         done();
       });
     });
@@ -70,10 +70,10 @@ describe('API', function(){
 /*this will test the basics of the task schema in the db*/
   it('loads a task by ID', function(done)
   {
-    Task.create({_id:10,name:'do this'}, function(err, doc)
+    Task.create({_id:'50341373e894ad16347efe02', name:'do this'}, function(err, doc)
     {
       assert.ifError(err);
-      var url = URL_ROOT + '/task/id/10';
+      var url = URL_ROOT + '/task/id/50341373e894ad16347efe02';
       superagent.get(url, function(err, res)
       {
         assert.ifError(err);
@@ -83,7 +83,7 @@ describe('API', function(){
           result = JSON.parse(res.text);
         });
         assert.ok(result.task);
-        assert.equal(result.task._id, 10);
+        assert.equal(result.task._id, '50341373e894ad16347efe02');
         done();
       });
     });
@@ -91,10 +91,10 @@ describe('API', function(){
 //this will test the basics of the project schema in the db
   it('loads a project by id', function(done)
   {
-    Project.create({_id:7,name:'important'}, function(err, doc)
+    Project.create({_id:'50341373e894ad16347efe03', name:'important'}, function(err, doc)
     {
       assert.ifError(err);
-      var url = URL_ROOT + '/project/id/7';
+      var url = URL_ROOT + '/project/id/50341373e894ad16347efe03';
       superagent.get(url,function(err, res)
       {
         assert.ifError(err);
@@ -104,7 +104,7 @@ describe('API', function(){
           result = JSON.parse(res.text);
         });
         assert.ok(result.project);
-        assert.equal(result.project._id, 7);
+        assert.equal(result.project._id, '50341373e894ad16347efe03');
         done();
       });
     });
@@ -113,27 +113,37 @@ describe('API', function(){
   it('loads all the task that are assigned to one person', function(done)
   {
     var tasksHold = [
-      {_id:1, name:'one', person:10},
-      {_id:2, name:'two', person:10},
-      {_id:3, name:'three', person:11},
-      {_id:4, name:'four'}
+      {_id:'40341373e894ad16347efe01', name:'one', user:'60341373e894ad16347efe01' },
+      {_id:'40341373e894ad16347efe02', name:'two', user:'60341373e894ad16347efe01'  },
+      {_id:'40341373e894ad16347efe03', name:'three', user:'60341373e894ad16347efe02' }, 
+      {_id:'40341373e894ad16347efe04', name:'four'}
     ];
-    Task.create(tasksHold, function(err, task)
+    var userHold = [
+      {_id:'50341373e894ad16347efe06', name:'this one'},
+      {_id:'50341373e894ad16347efe07', name:'not this'}
+    ];
+    User.create(userHold, function(err, user)
     {
       assert.ifError(err);
-      var url = URL_ROOT + '/task/person/10';
-      superagent.get(url,function(err, res)
+      Task.create(tasksHold, function(err, task)
       {
         assert.ifError(err);
-        var result;
-        assert.doesNotThrow(function()
+        var url = URL_ROOT + '/task/person/60341373e894ad16347efe01';
+        superagent.get(url,function(err, res)
         {
-          result = JSON.parse(res.text);
+          assert.ifError(err);
+          var result;
+          assert.doesNotThrow(function()
+          {
+            result = JSON.parse(res.text);
+          });
+          assert.ok(result.tasks[0]);
+          assert.equal(result.tasks[0]._id, '40341373e894ad16347efe01');
+          assert.equal(result.tasks[1]._id, '40341373e894ad16347efe02');
+          done();
         });
-        assert.ok(result.tasks[0]);
-        assert.equal(result.tasks[0]._id, 1);
-        done();
       });
     });
   });
+
 });

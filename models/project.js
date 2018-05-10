@@ -1,9 +1,11 @@
 var mongoose = require('mongoose');
+var User = require('./user');
+
 
 var projectSchema = {
-  _id:{type:Number, required:true},
+
   name:{type:String, required: true},
-  manager:{type:Number},
+  //user:User.userSchema,
   description:{type:String},
   due:{type:Date}
 };
