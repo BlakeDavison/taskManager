@@ -7,7 +7,7 @@ var taskSchema = {
 
   name:{type:String, required: true},
   due:{type:Date},
-  user:{type:Schema.Types.ObjectId, ref:'User'},
+  user:{type:Schema.Types.ObjectId, ref:'User', index:true},
   project:{type:Schema.Types.ObjectId, ref:'Project'},
   tDepend:[{type:Number}],
   progress:{

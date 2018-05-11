@@ -145,7 +145,7 @@ describe('API', function(){
       });
     });
   });
-//getting all the projects that one person is on
-//  it('loads all of the tasks that one person has', function(done){});
+
+
 
 });

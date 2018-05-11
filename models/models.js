@@ -9,8 +9,7 @@ module.exports = function(wagner)
   var Task = mongoose.model('Task', require('./task'), 'tasks');
   var Project = mongoose.model('Project', require('./project'), 'projects');
 
-  var models =
-  {
+  var models = {
     User: User,
     Task: Task,
     Project: Project

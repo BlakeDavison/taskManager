@@ -6,7 +6,8 @@ var sprintSchema = {
   name:{type:String, required: true},
   function:{type:String},
   due:{type:Date},
-  project:{type:Schema.Types.ObjectId, ref:'Project'}
+  start:{type:Date},
+  project:{type:Schema.Types.ObjectId, ref:'Project', index:true}
 };
 
 module.exports = new mongoose.Schema(sprintSchema);

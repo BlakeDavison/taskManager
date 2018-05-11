@@ -29,7 +29,7 @@ api.get('/task/person/:id', wagner.invoke(function(Task)
   {
     Task.
       find({user: req.params.id}).
-      populate('user').
+    //  populate('user').
       sort({name:1}).
       exec(handleMany.bind(null,'tasks', res));
   };
@@ -41,7 +41,7 @@ api.get('/task/project/:id', wagner.invoke(function(Task)
   {
     Task.
       find({project: req.params.id}).
-      populate('user').
+      //populate('user').
       sort({name:1}).
       exec(handleMany.bind(null,'tasks', res));
   };
@@ -62,7 +62,7 @@ api.get('/task/project/:id', wagner.invoke(function(Task)
     {
       Project.
         find({user: req.params.id}).
-        populate('user').
+      //  populate('user').
         sort({name:1}).
         exec(handleMany.bind(null,'projects', res));
     };
