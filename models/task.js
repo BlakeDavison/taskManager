@@ -12,7 +12,7 @@ var taskSchema = {
   tDepend:[{type:Number}],
   progress:{
     type:String,
-    enum:['IDed', 'Assigned', 'Started', 'Finished'],
+    enum:['IDed', 'Assigned', 'Started', 'Passed Due', 'Finished'],
     default: 'IDed'//need to make this auto update when assigned
   }
 };

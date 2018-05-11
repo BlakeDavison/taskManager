@@ -5,8 +5,7 @@ var Schema = mongoose.Schema;
 var userSchema = {
 
   name:{type:String, required: true},
-  team:{type:Number},
-  projects:[{type:Schema.Types.ObjectId, ref:'Project'}]
+  team:{type:Number}
 };
 
 module.exports = new mongoose.Schema(userSchema);

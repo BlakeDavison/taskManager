@@ -91,10 +91,10 @@ describe('API', function(){
 //this will test the basics of the project schema in the db
   it('loads a project by id', function(done)
   {
-    Project.create({_id:'50341373e894ad16347efe03', name:'important'}, function(err, doc)
+    Project.create({_id:'50341373e894ad1634700003', name:'important'}, function(err, doc)
     {
       assert.ifError(err);
-      var url = URL_ROOT + '/project/id/50341373e894ad16347efe03';
+      var url = URL_ROOT + '/project/id/50341373e894ad1634700003';
       superagent.get(url,function(err, res)
       {
         assert.ifError(err);
@@ -104,7 +104,7 @@ describe('API', function(){
           result = JSON.parse(res.text);
         });
         assert.ok(result.project);
-        assert.equal(result.project._id, '50341373e894ad16347efe03');
+        assert.equal(result.project._id, '50341373e894ad1634700003');
         done();
       });
     });
@@ -115,7 +115,7 @@ describe('API', function(){
     var tasksHold = [
       {_id:'40341373e894ad16347efe01', name:'one', user:'60341373e894ad16347efe01' },
       {_id:'40341373e894ad16347efe02', name:'two', user:'60341373e894ad16347efe01'  },
-      {_id:'40341373e894ad16347efe03', name:'three', user:'60341373e894ad16347efe02' }, 
+      {_id:'40341373e894ad16347efe03', name:'three', user:'60341373e894ad16347efe02' },
       {_id:'40341373e894ad16347efe04', name:'four'}
     ];
     var userHold = [
@@ -145,5 +145,7 @@ describe('API', function(){
       });
     });
   });
+//getting all the projects that one person is on
+//  it('loads all of the tasks that one person has', function(done){});
 
 });

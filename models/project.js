@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var projectSchema = {
 
   name:{type:String, required: true},
-  user:{type:Schema.Types.ObjectId, ref:'User'},
+  manager:{type:Schema.Types.ObjectId, ref:'User'},
   description:{type:String},
   due:{type:Date}
 };

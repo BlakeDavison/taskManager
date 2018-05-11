@@ -34,8 +34,20 @@ api.get('/task/person/:id', wagner.invoke(function(Task)
       exec(handleMany.bind(null,'tasks', res));
   };
 }));
+//get all tasks in a project
+api.get('/task/project/:id', wagner.invoke(function(Task)
+{
+  return function(req, res)
+  {
+    Task.
+      find({project: req.params.id}).
+      populate('user').
+      sort({name:1}).
+      exec(handleMany.bind(null,'tasks', res));
+  };
+}));
 //This will get a project by ID
-api.get('/project/id/:id', wagner.invoke(function(Project)
+  api.get('/project/id/:id', wagner.invoke(function(Project)
   {
     return function(req, res)
     {
@@ -43,11 +55,23 @@ api.get('/project/id/:id', wagner.invoke(function(Project)
         handleOne.bind(null, 'project', res));
     };
   }));
+  //this will get all the projects a user is on
+  api.get('/project/person/:id', wagner.invoke(function(Project)
+  {
+    return function(req, res)
+    {
+      Project.
+        find({user: req.params.id}).
+        populate('user').
+        sort({name:1}).
+        exec(handleMany.bind(null,'projects', res));
+    };
+  }));
 
   return api;
 };
 
-//function definitons ti apply DRY-ness
+//function definitons to apply DRY-ness
 function handleOne(property, res, err, result)
 {
   if(err)
