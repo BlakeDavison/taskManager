@@ -22,7 +22,7 @@ module.exports = function(wagner)
         handleOne.bind(null, 'task', res));
     };
   }));
-  api.post('/task/id', wagner.invoke(function(Task)
+  api.post('/task', wagner.invoke(function(Task)
   {
     return function(req, res)
     {
@@ -35,15 +35,9 @@ module.exports = function(wagner)
         {
           res.send(err);
         }
-        else if (!task)
-        {
-          return res.
-            status(status.NOT_FOUND).
-            json({ error: 'Not found' });
-        }
       });
-    }
-  }));
+    };
+  }));/*
 //this will get the id of the person assigned to task
 api.get('/task/person/:id', wagner.invoke(function(Task)
 {
@@ -97,7 +91,7 @@ api.get('/task/project/:id', wagner.invoke(function(Task)
         sort({name:1}).
         exec(handleMany.bind(null,'sprints', res));
     };
-  }));
+  }));*/
 
   return api;
 };

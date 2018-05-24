@@ -93,7 +93,7 @@ describe('API', function(){
         done();
       });
     });
-  });
+  });/*
 //this will test the basics of the project schema in the db
   it('loads a project by id', function(done)
   {
