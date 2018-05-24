@@ -8,11 +8,13 @@ module.exports = function(wagner)
   var User = mongoose.model('User', require('./user'), 'users');
   var Task = mongoose.model('Task', require('./task'), 'tasks');
   var Project = mongoose.model('Project', require('./project'), 'projects');
+  var Sprint = mongoose.model('Sprint', require('./sprint'), 'sprints');
 
   var models = {
     User: User,
     Task: Task,
-    Project: Project
+    Project: Project,
+    Sprint: Sprint
   };
 
 

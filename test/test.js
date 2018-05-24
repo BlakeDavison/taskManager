@@ -10,6 +10,7 @@ describe('API', function(){
   var User;
   var Task;
   var Project;
+  var Sprint;
 
   before(function()
   {//Inital server setup
@@ -23,6 +24,7 @@ describe('API', function(){
     User = models.User;
     Task = models.Task;
     Project = models.Project;
+    Sprint = models.Sprint;
   });
 
   after(function()
@@ -41,7 +43,11 @@ describe('API', function(){
           Project.remove({}, function(err)
           {
             assert.ifError(err);
-            done();
+            Sprint.remove({}, function(err)
+            {
+              assert.ifError(err);
+              done();
+            });
           });
         });
     });
@@ -145,7 +151,62 @@ describe('API', function(){
       });
     });
   });
-
-
+   //load sprint by ID
+  it('loads a sprint by ID', function(done)
+  {
+    Sprint.create({_id:'000000000000000000000021', name:'do this'}, function(err, doc)
+    {
+      assert.ifError(err);
+      var url = URL_ROOT + '/sprint/id/000000000000000000000021';
+      superagent.get(url, function(err, res)
+      {
+        assert.ifError(err);
+        var result;
+        assert.doesNotThrow(function()
+        {
+          result = JSON.parse(res.text);
+        });
+        assert.ok(result.sprint);
+        assert.equal(result.sprint._id, '000000000000000000000021');
+        done();
+      });
+    });
+  });
+  //loads all the sprints in one project
+/*  it('loads all the sprints that are assigned to one project', function(done)
+  {//this is still buggy fix later
+    var sprintHold = [
+      {_id:'020000000000000000000011', name:'one', project:'100000000000000000000001' },
+      {_id:'020000000000000000000012', name:'two', project:'100000000000000000000001'  },
+      {_id:'020000000000000000000013', name:'three', project:'200000000000000000000002' },
+      {_id:'020000000000000000000014', name:'four'}
+    ];
+    var projectHold = [
+      {_id:'100000000000000000000001', name:'this one'},
+      {_id:'200000000000000000000002', name:'not this'}
+    ];
+    Project.create(projectHold, function(err, project)
+    {
+      assert.ifError(err);
+      Sprint.create(sprintHold, function(err, sprint)
+      {
+        assert.ifError(err);
+        var url = URL_ROOT + '/sprint/project/100000000000000000000001';
+        superagent.get(url,function(err, res)
+        {
+          assert.ifError(err);
+          var result;
+          assert.doesNotThrow(function()
+          {
+            result = JSON.parse(res.text);
+          });
+          assert.ok(result.tasks[0]);
+          assert.equal(result.tasks[0]._id, '020000000000000000000011');
+          assert.equal(result.tasks[1]._id, '020000000000000000000012');
+          done();
+        });
+      });
+    });
+  });*/
 
 });

@@ -22,6 +22,28 @@ module.exports = function(wagner)
         handleOne.bind(null, 'task', res));
     };
   }));
+  api.post('/task/id', wagner.invoke(function(Task)
+  {
+    return function(req, res)
+    {
+      Task.create(
+      {
+        name: 'test'
+      }, function(err, task)
+      {
+        if(err)
+        {
+          res.send(err);
+        }
+        else if (!task)
+        {
+          return res.
+            status(status.NOT_FOUND).
+            json({ error: 'Not found' });
+        }
+      });
+    }
+  }));
 //this will get the id of the person assigned to task
 api.get('/task/person/:id', wagner.invoke(function(Task)
 {
@@ -55,22 +77,30 @@ api.get('/task/project/:id', wagner.invoke(function(Task)
         handleOne.bind(null, 'project', res));
     };
   }));
-  //this will get all the projects a user is on
-  api.get('/project/person/:id', wagner.invoke(function(Project)
+  //get sprint by id
+  api.get('/sprint/id/:id', wagner.invoke(function(Sprint)
   {
     return function(req, res)
     {
-      Project.
-        find({user: req.params.id}).
-      //  populate('user').
+      Sprint.findOne({_id: req.params.id},
+        handleOne.bind(null, 'sprint', res));
+    };
+  }));
+  //this will get all the sprints a project has
+  api.get('/sprint/project/:id', wagner.invoke(function(Sprint)
+  {
+    return function(req, res)
+    {
+      Sprint.
+        find({project: req.params.id}).
+        //populate('user').
         sort({name:1}).
-        exec(handleMany.bind(null,'projects', res));
+        exec(handleMany.bind(null,'sprints', res));
     };
   }));
 
   return api;
 };
-
 //function definitons to apply DRY-ness
 function handleOne(property, res, err, result)
 {
