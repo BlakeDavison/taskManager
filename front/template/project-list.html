@@ -1,0 +1,10 @@
+<div class="project-list container-fluid">
+    <h2>Project list</h2>
+    <div ng-repeat="p in prj">
+      {{p.name}}:
+      <ul>
+        <li ng-repeat="t in tlist  | filter:{project : p.name}">{{t.name}}</li>
+      </ul>
+      
+    </div>
+</div>

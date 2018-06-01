@@ -1,28 +1,25 @@
-<div class="task-list">
-  <div class="container-fluid">
+<div class="task-list container-fluid">
     <h2 id="Title">Task List</h2>
     <div >
       Display Order:<select ng-init="selectedView = views[0]" ng-model="selectedView" ng-options="x for x in views">
+      </select>
     </div>
-    </select>
+    <ul>
+      <li ng-repeat="x in tasklist | orderBy:selectedView" class="TaskItem">
+        <input type="checkbox" ng-model="x.done">{{x.name}} in project {{x.project}}
+      </li>
+    </ul>
 
-      <ul>
-        <li ng-repeat="x in tasklist | orderBy:selectedView" class="TaskItem">
-          <input type="checkbox" ng-model="x.done">{{x.name}} in project {{x.project}}
-        </li>
-      </ul>
-      <button ng-click="showForm = !showForm">
-        <div ng-show="!showForm">Add Task</div>
-        <div ng-show="showForm">Hide Form</div>
-      </button>
-      <button ng-click="emptyComplete()">Clean Tasklist</button>
-      <div ng-show="showForm">
+    <button ng-click="showForm = !showForm">
+      <div ng-show="!showForm">Add Task</div>
+      <div ng-show="showForm">Hide Form</div>
+    </button>
+    <button ng-click="emptyComplete()">Clean Tasklist</button>
+    <div ng-show="showForm">
       <form>
-        <input type="text" placeholder="Add Task" ng-model="formNewTask" ng-model-instant/>
-        <input type="text" placeholder="Project" ng-model="forProject" ng-model-instant/>
+        Task Name:<input type="text" placeholder="Add Task" ng-model="formNewTask" ng-model-instant/>
+        Project:<select ng-init=" " ng-model="selectedProject" ng-options="y.name for y in prj"> </select>
         <button ng-click="addTask()">Add</button>
-
       </form>
-      </div>
     </div>
 </div>

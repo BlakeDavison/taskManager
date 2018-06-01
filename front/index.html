@@ -5,43 +5,49 @@
     <script type="text/javascript"
       src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.js">
     </script>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <!-- Latest compiled JavaScript -->
+     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>tasks n' stuff</title>
   </head>
-  <body ng-app="pma" ng-controller="taskCtrl">
-    <task-list></task-list>
-
+  <body ng-app="pma" >
+    <div ng-controller="taskCtrl" >
+      <task-list></task-list>
+    </div>
+    <div ng-controller="projectCtrl">
+      <project-list></project-list>
+    </div>
     <script type="text/javascript">
-      var app = angular.module('pma',[]);
-      app.controller('taskCtrl', function($scope){
-//list the different ways to sort the list
-        $scope.views = ["name", "project"];
-        $scope.showForm = false;
-        $scope.tasklist = [{name:"test1", project:"z"}, {name:"test2", project:"b"}];
-        $scope.addTask = function(){
-          $scope.tasklist.push({name:$scope.formNewTask, project:$scope.forProject});
-//reset the values
-          $scope.formNewTask = "";
-          $scope.forProject = "";
-        };
-        $scope.emptyComplete = function()
-        {
-          $scope.tasklist = $scope.tasklist.filter(function(task)
-          {
-            return !task.done;
-          });
-        };
-      });
-      app.directive('taskList', function(){
+      var app = angular.module('pma',[]).service('sVars', function(){
+        var projects = [{name:"b"}, {name:"z"}, {name:"test"}];
+        var tasklist = [{name:"test1", project:"z"}, {name:"test2", project:"b"}];
+        var vari = "test";
         return{
-          restrict: 'E',
-          templateUrl: 'template/task-list.html'
-        }
+          getPrj: function () {
+            return projects;
+          },
+          setPrj: function(v) {
+            projects = v;
+          },
+          getVar: function(){
+            return vari;
+          },
+          setVar: function(v){
+            vari = v;
+          },
+          getTL: function(){
+            return tasklist;
+          },
+          setTL: function(v){
+            tasklist = v;
+          }
+        };
       });
     </script>
+    <script type="text/javascript" src="./angularJS/project.js"></script>
+    <script type="text/javascript" src="./angularJS/task.js"></script>
   </body>
 </html>
