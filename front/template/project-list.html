@@ -5,6 +5,26 @@
       <ul>
         <li ng-repeat="t in tlist  | filter:{project : p.name}">{{t.name}}</li>
       </ul>
-      
+      <button ng-click="showForm = !showForm">
+        <div ng-show="!showForm">Add Task</div>
+        <div ng-show="showForm">Hide Form</div>
+      </button>
+      <div data-ng-show="showForm">
+        <form>
+          Task Name:<input type="text" placeholder="Add Task" ng-model="t" ng-model-instant/>
+          For Project: {{p.name}}
+          <button ng-click="addT(t, p.name)">Add</button>
+        </form>
+      </div>
     </div>
+
+    <button ng-click="showNPrj = !showNPrj">
+      <div ng-show="!showNPrj">New Project</div>
+      <div ng-show="showNPrj">Hide Form</div>
+    </button>
+    <div ng-show="showNPrj">
+      Project Name:<input type="text" placeholder="Project Name" ng-model="NewProj1">
+      <button ng-click="addP(NewProj1)">Create</button>
+    </div>
+    {{prj}}
 </div>

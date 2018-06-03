@@ -4,7 +4,8 @@
   "description": "basic templet",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/test.js"
+    "test": "mocha test/test.js",
+    "start": "node index.js"
   },
   "author": "Blake Davison",
   "license": "ISC",
@@ -17,6 +18,7 @@
   },
   "devDependencies": {
     "mocha": "^2.2.4",
+    "nodemon": "^1.17.5",
     "superagent": "1.2.0"
   }
 }

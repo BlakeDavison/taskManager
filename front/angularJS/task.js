@@ -7,7 +7,9 @@ app.controller('taskCtrl', function($scope, sVars)
   $scope.tasklist = sVars.getTL();
   $scope.addTask = function()
   {
-    $scope.tasklist.push({name:$scope.formNewTask, project:$scope.selectedProject.name});
+    var idNum = $scope.tasklist.length;
+    $scope.tasklist.push({name:$scope.formNewTask, project:$scope.selectedProject.name, id:idNum});
+    console.log({name:$scope.formNewTask, project:$scope.selectedProject.name, id:idNum});
     //reset the values
     $scope.formNewTask = "";
     $scope.forProject = "";
