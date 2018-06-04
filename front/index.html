@@ -20,34 +20,10 @@
     <div ng-controller="projectCtrl">
       <project-list></project-list>
     </div>
-    <script type="text/javascript">
-      var app = angular.module('pma',[]).service('sVars', function(){
-        var projects = [{name:"b", id:0}, {name:"z",id:1}, {name:"test",id:2}];
-        var tasklist = [{name:"test1", project:"z"}, {name:"test2", project:"b"}];
-        var vari = "test";
-        return{
-          getPrj: function () {
-            return projects;
-          },
-          setPrj: function(v) {
-            projects = v;
-          },
-          getVar: function(){
-            return vari;
-          },
-          setVar: function(v){
-            vari = v;
-          },
-          getTL: function(){
-            return tasklist;
-          },
-          setTL: function(v){
-            tasklist = v;
-          }
-        };
-      });
-    </script>
+    <!-- bring in angular scripts -->
+    <script type="text/javascript" src="./angInit.js"></script>
     <script type="text/javascript" src="./angularJS/project.js"></script>
     <script type="text/javascript" src="./angularJS/task.js"></script>
+    </script>
   </body>
 </html>
