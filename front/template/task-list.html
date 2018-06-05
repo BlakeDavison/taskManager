@@ -5,11 +5,12 @@
       </select>
     </div>
     <ul>
+      <li ng-hide="tasklist.length">No tasks</li>
       <li ng-repeat="x in tasklist | orderBy:selectedView" class="TaskItem">
-        <input type="checkbox" ng-model="x.done">{{x.name}} in project {{x.project}}
+        <input type="checkbox" ng-model="x.done"><label class="strikethrough">{{x.name}} in project {{x.project}}</label>
       </li>
     </ul>
-
+    <!-- Form -->
     <button ng-click="showForm = !showForm">
       <div ng-show="!showForm">Add Task</div>
       <div ng-show="showForm">Hide Form</div>
@@ -19,6 +20,9 @@
       <form>
         Task Name:<input type="text" placeholder="Add Task" ng-model="formNewTask" ng-model-instant/>
         Project:<select ng-init=" " ng-model="selectedProject" ng-options="y.name for y in prj"> </select>
+        <div ng-show="selectedProject">
+          Sprint:<select ng-init="" ng-model="selectedSprint" ng-options="z.name for z in sprintlistT | filter:{project: selectedProject.name}"> </select>
+        </div>
         <button ng-click="addTask()">Add</button>
       </form>
     </div>

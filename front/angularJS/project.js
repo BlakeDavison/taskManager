@@ -1,5 +1,6 @@
 app.controller('projectCtrl', function($scope, sVars){
   $scope.prj = sVars.getPrj();
+  console.log($scope.prj);
   $scope.tlist = sVars.getTL();
   $scope.slist = sVars.getSP();
   $scope.showNPrj = false;
@@ -9,7 +10,7 @@ app.controller('projectCtrl', function($scope, sVars){
     var tID = $scope.tlist.length;
     $scope.tlist.push({name:t, project:p, id:tID});
     //reset the value
-    $scope.formNewT = "";
+    $scope.myForm.$setPristine;
     sVars.setTL($scope.tasklist);
   };
   $scope.addTas = function(t, p, s)
@@ -17,7 +18,7 @@ app.controller('projectCtrl', function($scope, sVars){
     var tID = $scope.tlist.length;
     $scope.tlist.push({name:t, project:p, id:tID, sprint:s});
     //reset the value
-    $scope.formNewT = "";
+    $scope.teat123.$setPristine();
     sVars.setTL($scope.tasklist);
   };
   $scope.addP = function(v)

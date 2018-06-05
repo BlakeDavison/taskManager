@@ -5,14 +5,14 @@ app.controller('taskCtrl', function($scope, sVars)
   $scope.prj = sVars.getPrj();
   $scope.showForm = false;
   $scope.tasklist = sVars.getTL();
+  $scope.sprintlistT = sVars.getSP();
   $scope.addTask = function()
   {
     var idNum = $scope.tasklist.length;
-    $scope.tasklist.push({name:$scope.formNewTask, project:$scope.selectedProject.name, id:idNum});
-    console.log({name:$scope.formNewTask, project:$scope.selectedProject.name, id:idNum});
+    $scope.tasklist.push({name:$scope.formNewTask, project:$scope.selectedProject.name, id:idNum, sprint:$scope.selectedSprint});
     //reset the values
     $scope.formNewTask = "";
-    $scope.forProject = "";
+
     $scope.selectedProject = "";
     sVars.setTL($scope.tasklist);
   };

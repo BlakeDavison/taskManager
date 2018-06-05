@@ -3,9 +3,11 @@
     Display:<select ng-init="selectedV = CView[0]" ng-model="selectedV" ng-options="x for x in CView">
     </select>
 <!-- List the tasks in the project view -->
+    <h2 ng-hide="prj.length">No projects</h2>
     <div ng-repeat="p in prj" ng-show="selectedV == 'Project'">
-      <h3>{{p.name}}</h3>:
+      <h3>{{p.name}}:</h3>
       <ul>
+
         <li ng-repeat="t in tlist  | filter:{project : p.name}">{{t.name}}</li>
       </ul>
       <button ng-click="showForm = !showForm">
@@ -13,7 +15,7 @@
         <div ng-show="showForm">Hide Form</div>
       </button>
       <div data-ng-show="showForm">
-        <form>
+        <form name="myForm">
           Task Name:<input type="text" placeholder="Add Task" ng-model="t" ng-model-instant/>
           For Project: {{p.name}}
           <button ng-click="addT(t, p.name)">Add</button>
@@ -23,7 +25,8 @@
   <!-- Sprint view-->
     <div ng-show="selectedV == 'Sprint'">
       <div ng-repeat="p in prj">
-        <h3>{{p.name}}</h3>:
+        <h3>{{p.name}}:</h3>
+        < ng-hide="s.name">No Sprints</>
         <div ng-repeat="s in slist | filter:{project: p.name}">
           <h4>{{s.name}}</h4>
           <ul>
@@ -34,29 +37,14 @@
             <div ng-show="showForm">Hide Form</div>
           </button>
           <div data-ng-show="showForm">
-            <form>
+            <form name="test123">
               Task Name:<input type="text" placeholder="Add Task" ng-model="t" ng-model-instant/>
               For Project: {{p.name}} in Sprint: {{s.name}}
               <button ng-click="addTas(t, p.name, s.name)">Add</button>
             </form>
           </div>
         </div>
-        <!-- Sprintless Task Adder -->
-        <h4>No Sprint:</h4>
-        <ul>
-          <li ng-repeat="t in tlist | filter:{project: p.name, }">{{t.name}}</li>
-        </ul>
-        <button ng-click="showForm2 = !showForm2">
-          <div ng-show="!showForm2">Add Task</div>
-          <div ng-show="showForm2">Hide Form</div>
-        </button>
-        <div data-ng-show="showForm2">
-          <form>
-            Task Name:<input type="text" placeholder="Add Task" ng-model="t" ng-model-instant/>
-            For Project: {{p.name}} with no Sprint
-            <button ng-click="addT(t, p.name)">Add</button>
-          </form>
-        </div>
+
         <!-- Sprint adder -->
         <button ng-click="showNSpt = !showNSpt">
           <div ng-show="!showNSpt">New Sprint</div>
