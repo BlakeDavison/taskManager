@@ -4,7 +4,6 @@ app.controller('projectCtrl', function($scope, sVars){
   $scope.slist = sVars.getSP();
   $scope.myt = {};
   // $scope.form = {};
-  $scope.showNPrj = false;
   $scope.CView = ["Project", "Sprint"];
   $scope.addT = function(t, p, i)
   {//adds task

@@ -20,6 +20,7 @@
       <form>
         Task Name:<input type="text" placeholder="Add Task" ng-model="formNewTask" ng-model-instant/>
         Project:<select ng-init=" " ng-model="selectedProject" ng-options="y.name for y in prj"> </select>
+        Due:<input type="date" ng-model="duedate">
         <div ng-show="selectedProject">
           Sprint:<select ng-init="" ng-model="selectedSprint" ng-options="z.name for z in sprintlistT | filter:{project: selectedProject.name}"> </select>
         </div>
