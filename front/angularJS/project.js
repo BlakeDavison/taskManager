@@ -1,16 +1,17 @@
 app.controller('projectCtrl', function($scope, sVars){
   $scope.prj = sVars.getPrj();
-  console.log($scope.prj);
   $scope.tlist = sVars.getTL();
   $scope.slist = sVars.getSP();
+  $scope.myt = {};
+  // $scope.form = {};
   $scope.showNPrj = false;
   $scope.CView = ["Project", "Sprint"];
-  $scope.addT = function(t, p)
+  $scope.addT = function(t, p, i)
   {//adds task
     var tID = $scope.tlist.length;
     $scope.tlist.push({name:t, project:p, id:tID});
     //reset the value
-    $scope.myForm.$setPristine;
+    $scope.myt[i] = '';
     sVars.setTL($scope.tasklist);
   };
   $scope.addTas = function(t, p, s)
@@ -18,7 +19,7 @@ app.controller('projectCtrl', function($scope, sVars){
     var tID = $scope.tlist.length;
     $scope.tlist.push({name:t, project:p, id:tID, sprint:s});
     //reset the value
-    $scope.teat123.$setPristine();
+    $scope.test123.$setPristine();
     sVars.setTL($scope.tasklist);
   };
   $scope.addP = function(v)
@@ -37,9 +38,9 @@ app.controller('projectCtrl', function($scope, sVars){
   };
 });
 
-app.directive('projectList', function(){
-  return{
-    restrict: 'E',
-    templateUrl: 'template/project-list.html'
-  }
-});
+// app.directive('projectList', function(){
+//   return{
+//     restrict: 'E',
+//     templateUrl: 'template/project-list.html'
+//   }
+// });

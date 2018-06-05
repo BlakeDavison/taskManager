@@ -5,8 +5,8 @@
       </select>
     </div>
     <ul>
-      <li ng-hide="tasklist.length">No tasks</li>
-      <li ng-repeat="x in tasklist | orderBy:selectedView" class="TaskItem">
+      <li class="links" ng-hide="tasklist.length">No tasks</li>
+      <li class="links" ng-repeat="x in tasklist | orderBy:selectedView" class="TaskItem">
         <input type="checkbox" ng-model="x.done"><label class="strikethrough">{{x.name}} in project {{x.project}}</label>
       </li>
     </ul>

@@ -27,9 +27,9 @@ app.controller('taskCtrl', function($scope, sVars)
   };
 });
 
-app.directive('taskList', function(){
-  return{
-    restrict: 'E',
-    templateUrl: 'template/task-list.html'
-  }
-});
+// app.directive('taskList', function(){
+//   return{
+//     restrict: 'E',
+//     templateUrl: 'template/task-list.html'
+//   }
+// });
