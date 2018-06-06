@@ -1,7 +1,7 @@
 <div class="task-list container-fluid">
     <h2 id="Title">Task List</h2>
     <div >
-      Display Order:<select ng-init="selectedView = views[0]" ng-model="selectedView" ng-options="x for x in views">
+      Display Order:<select ng-init="selectedView = views[2]" ng-model="selectedView" ng-options="x for x in views">
       </select>
     </div>
     <ul>
@@ -16,9 +16,10 @@
       <div ng-show="showForm">Hide Form</div>
     </button>
     <button ng-click="emptyComplete()">Clean Tasklist</button>
+    <br><br><br>
     <div ng-show="showForm">
       <form>
-        Task Name:<input type="text" placeholder="Add Task" ng-model="formNewTask" ng-model-instant/>
+        Task Name:<input type="text" placeholder="Add Task" ng-model="formNewTask1" ng-model-instant/>
         Project:<select ng-init=" " ng-model="selectedProject" ng-options="y.name for y in prj"> </select>
         Due:<input type="date" ng-model="duedate">
         <div ng-show="selectedProject">

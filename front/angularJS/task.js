@@ -9,12 +9,14 @@ app.controller('taskCtrl', function($scope, sVars)
   $scope.addTask = function()
   {
     var idNum = $scope.tasklist.length;
-    $scope.tasklist.push({name:$scope.formNewTask, project:$scope.selectedProject.name, id:idNum, sprint:$scope.selectedSprint, due:$scope.duedate});
+    var prjHold = "";
+    if($scope.selectedProject){prjHold=$scope.selectedProject.name}
+    $scope.tasklist.push({name:$scope.formNewTask1, project:prjHold, id:idNum, sprint:$scope.selectedSprint, due:$scope.duedate});
     //reset the values
     $scope.formNewTask = "";
     $scope.selectedProject = "";
     sVars.setTL($scope.tasklist);
-    console.log($scope.duedate);
+    console.log($scope.tasklist);
   };
   $scope.emptyComplete = function()
   {
