@@ -4,6 +4,7 @@ app.controller('projectCtrl', function($scope, sVars){
   $scope.slist = sVars.getSP();
   $scope.myt = {};
   $scope.sptv = {};
+  $scope.addToSpt = {};
   // $scope.form = {};
   $scope.CView = ["Project", "Sprint"];
   $scope.addT = function(t, p, i)
@@ -21,6 +22,20 @@ app.controller('projectCtrl', function($scope, sVars){
     $scope.tlist.push({name:t, project:p, id:tID, sprint:s});
     $scope.sptv[si] = "";
     sVars.setTL($scope.tlist);
+  };
+  $scope.addP = function(v)
+  {//add project
+    var pID = $scope.prj.length;
+    $scope.prj.push({name:v, id:pID});
+    sVars.setPrj($scope.prj);
+    $scope.NewProj1 = "";
+  };
+  $scope.addS = function(s,p)
+  {
+    var sID = $scope.slist.length;
+    $scope.slist.push({name:s, project:p, id:sID});
+    $scope.NewSpt1 = "";
+    sVars.setSP($scope.slist);
   };
   $scope.clearlist = function()
   {
@@ -47,20 +62,34 @@ app.controller('projectCtrl', function($scope, sVars){
       sVars.setSP($scope.slist);
     }
   };
-  $scope.addP = function(v)
-  {//add project
-    var pID = $scope.prj.length;
-    $scope.prj.push({name:v, id:pID});
-    sVars.setPrj($scope.prj);
-    $scope.NewProj1 = "";
-  };
-  $scope.addS = function(s,p)
+  $scope.deleteP = function(name)
   {
-    var sID = $scope.slist.length;
-    $scope.slist.push({name:s, project:p, id:sID});
-    $scope.NewSpt1 = "";
-    sVars.setSP($scope.slist);
+    var a = confirm("Delete Project " + name + " and all it Sprints and Tasks?");
+    if (a)
+    {
+      $scope.tlist = $scope.tlist.filter(function(task)
+      {//remove all tasks for the project
+        return task.project != name;
+      });
+      $scope.slist = $scope.slist.filter(function(sprint)
+      {//remove all sprints for the project
+        return sprint.project != name;
+      });
+      $scope.prj = $scope.prj.filter(function(project)
+      {//delete the project
+        return project.name != name;
+      });
+      sVars.setTL($scope.tlist);
+      sVars.setSP($scope.slist);
+      sVars.setPrj($scope.prj);
+    }
   };
+  $scope.changeSpt = function(v)
+  {
+    var index = $scope.tlist.indexOf(v);
+    $scope.tlist[index].sprint = $scope.addToSpt[v.id].name;
+    sVars.setTL($scope.tlist);
+  }
 });
 
 // app.directive('projectList', function(){

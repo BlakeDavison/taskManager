@@ -9,7 +9,7 @@ app.controller('taskCtrl', function($scope, sVars)
   $scope.addTask = function()
   {
     var idNum = $scope.tasklist.length;
-    var prjHold = "";
+    var prjHold = "unas";
     if($scope.selectedProject){prjHold=$scope.selectedProject.name}
     $scope.tasklist.push({name:$scope.formNewTask1, project:prjHold, id:idNum, sprint:$scope.selectedSprint, due:$scope.duedate});
     //reset the values

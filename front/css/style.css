@@ -4,9 +4,10 @@ ul{
 }
 li.links{
   border-style: solid;
-  border-color: #f8e6d3;
-  background-color: #FAF0E6;
+  border-color: #ffffcc;
+  background-color: #ffffe6;
   width:100%;
+  font-size: 110%
 }
 input[type=checkbox]:checked + label.strikethrough{
   text-decoration: line-through;

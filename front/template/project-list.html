@@ -1,91 +1,124 @@
 <div class="project-list container-fluid">
+  <div class="">
     <h2>Project list</h2>
-    Display:<select ng-init="selectedV = CView[0]" ng-model="selectedV" ng-options="x for x in CView">
-    </select>
+    <div style="float:right">Display:<select ng-init="selectedV = CView[0]" ng-model="selectedV" ng-options="x for x in CView">
+    </select></div>
+  </div>
 <!-- List the tasks in the project view -->
-    <h2 ng-hide="prj.length">No projects</h2>
-    <div ng-repeat="p in prj" ng-show="selectedV == 'Project'">
-      <h3>{{p.name}}:</h3>
-      <div style="margin:2%">
-        <div ng-hide="(tlist | filter:{project : p.name}).length" style="text-align:center"> <h4>No Tasks Yet.</h4></div>
-        <ul>
-          <li class="links" ng-repeat="t in tlist  | filter:{project : p.name}">
-            <input type="checkbox" ng-model="t.done"><label class="strikethrough">{{t.name}}</label>
-          </li>
-        </ul>
-        <button ng-click="showForm = !showForm">
-          <div ng-show="!showForm">Add Task</div>
-          <div ng-show="showForm">Hide Form</div>
-        </button>
-        <div data-ng-show="showForm">
-          <form name="myForm">
-            Task Name:<input type="text" placeholder="Add Task" ng-model="myt[p.id]" ng-model-instant/>
-            For Project: {{p.name}}
-            <button ng-click="addT(myt[p.id], p.name, p.id)">Add</button>
-          </form>
-        </div>
+  <h2 ng-hide="prj.length">No projects</h2>
+  <div ng-repeat="p in prj" ng-show="selectedV == 'Project'">
+    <h3><b>{{p.name}}:</b></h3>
+    <div style="margin:2%">
+      <div ng-hide="(tlist | filter:{project : p.name}).length" style="text-align:center"> <h4>No Tasks in project {{p.name}}.</h4></div>
+      <ul>
+        <li class="links" ng-repeat="t in tlist  | filter:{project : p.name}">
+          <input type="checkbox" ng-model="t.done"><label class="strikethrough">{{t.name}}</label>
+        </li>
+      </ul>
+      <button ng-click="deleteP(p.name)">Delete Project</button>
+      <button ng-click="showForm = !showForm">
+        <div ng-show="!showForm">Add Task</div>
+        <div ng-show="showForm">Hide Form</div>
+      </button>
+      <div data-ng-show="showForm">
+        <form name="myForm">
+          Task Name:<input type="text" placeholder="Add Task" ng-model="myt[p.id]" ng-model-instant/>
+          For Project: {{p.name}}
+          <button ng-click="addT(myt[p.id], p.name, p.id)">Add</button>
+        </form>
       </div>
     </div>
+  </div>
     <!-- end project view -->
 
     <!-- Sprint view-->
-    <div ng-show="selectedV == 'Sprint'">
-      <div ng-repeat="p in prj">
-        <h3>{{p.name}}:</h3>
-        <div style="margin:2%">
-          <div ng-hide="(slist | filter:{project: p.name}).length" style="text-align: center"><h4>No Sprints in this Project</h4></div>
-          <div ng-repeat="s in slist | filter:{project: p.name}">
-            <h4>{{s.name}}:</h4>
-            <div style="margin:2%">
-              <div ng-hide="(tlist | filter:{project: p.name, sprint:s.name}).length" style="text-align: center"><h4>No Tasks in this Sprint</h4></div>
-              <ul>
-                <li class="links" ng-repeat="t in tlist | filter:{project: p.name, sprint: s.name}">
-                  <input type="checkbox" ng-model="t.done"><label class="strikethrough">{{t.name}}</label>
-                </li>
-              </ul>
-              <button ng-click="deleteSprint(s.name)">Delete Sprint</button>
-              <button ng-click="showForm = !showForm">
-                <div ng-show="!showForm">Add Task</div>
-                <div ng-show="showForm">Hide Form</div>
-              </button>
-              <div data-ng-show="showForm">
-                <form >
-                  Task Name:<input type="text" placeholder="Add Task" ng-model="sptv[s.id]" ng-model-instant/>
-                  For Project: {{p.name}} in Sprint: {{s.name}}
-                  <button ng-click="addTas(sptv[s.id], p.name, s.name, s.id)">Add</button>
-                </form>
-              </div>
+  <div ng-show="selectedV == 'Sprint'">
+    <!-- list each project -->
+    <div ng-repeat="p in prj">
+      <h3><b>{{p.name}}:</b></h3>
+      <div style="margin:2%">
+        <!-- list each sprint -->
+        <div ng-hide="(slist | filter:{project: p.name}).length" style="text-align: center"><h4>No Sprints in project {{p.name}}</h4></div>
+        <div ng-repeat="s in slist | filter:{project: p.name}">
+          <h4>{{s.name}}:</h4>
+          <div style="margin:2%">
+            <div ng-hide="(tlist | filter:{project: p.name, sprint:s.name}).length" style="text-align: center"><h4>No Tasks in sprint {{s.name}}</h4></div>
+            <ul>
+              <li class="links" ng-repeat="t in tlist | filter:{project: p.name, sprint: s.name}">
+                <input type="checkbox" ng-model="t.done"><label class="strikethrough">{{t.name}}</label>
+              </li>
+            </ul>
+            <button ng-click="deleteSprint(s.name)">Delete Sprint</button>
+            <button ng-click="showForm = !showForm">
+              <div ng-show="!showForm">Add Task</div>
+              <div ng-show="showForm">Hide Form</div>
+            </button>
+            <div data-ng-show="showForm">
+              <form >
+                Task Name:<input type="text" placeholder="Add Task" ng-model="sptv[s.id]" ng-model-instant/>
+                For Project: {{p.name}} in Sprint: {{s.name}}
+                <button ng-click="addTas(sptv[s.id], p.name, s.name, s.id)">Add</button>
+              </form>
             </div>
+
           </div>
-          <br><br><br>
-          <!-- Sprint adder -->
-          <button ng-click="showNSpt = !showNSpt">
-            <div ng-show="!showNSpt">Add Sprint</div>
-            <div ng-show="showNSpt">Hide Form</div>
+        </div>
+        <!-- end of repeat for each sprint -->
+
+          <h4>No Sprint:</h4>
+          <ul>
+             <li ng-repeat="tl in tlist" ng-if="tl.project == p.name  && tl.sprint=='unas'" class="links">
+              <input type="checkbox" ng-model="tl.done"><label class="strikethrough">{{tl.name}}</label>
+              <!-- add a sprint select dropdown -->
+              <div style="float:right">
+                <select ng-model="addToSpt[tl.id]" ng-options="x.name for x in (slist | filter:{project: p.name})"></select>
+                <button ng-click="changeSpt(tl)" style="width:auto">Add to Sprint</button>
+              </div>
+            </li>
+          </ul>
+          <button ng-click="showForm12 = !showForm12">
+            <div ng-show="!showForm12">Add Task</div>
+            <div ng-show="showForm12">Hide Form</div>
           </button>
-          <div ng-show="showNSpt">
-            Sprint Name:<input type="text" placeholder="Sprint Name" ng-model="NewSpt1">
-            <button ng-click="addS(NewSpt1, p.name)">Create</button>
+          <div data-ng-show="showForm12">
+            <form >
+              Task Name:<input type="text" placeholder="Add Task" ng-model="t" ng-model-instant/>
+              For Project: {{p.name}} with no sprint.
+              <button ng-click="addTNS(t, p.name)">Add</button>
+            </form>
           </div>
+    <!-- end of repeat for each project -->
+    </div>
+    <br><br>
+    <button ng-click="deleteP(p.name)">Delete Project</button>
+    <br><br>
+    <!-- Sprint adder -->
+    <button ng-click="showNSpt = !showNSpt">
+      <div ng-show="!showNSpt">Add Sprint</div>
+      <div ng-show="showNSpt">Hide Form</div>
+    </button>
+    <div ng-show="showNSpt">
+      Sprint Name:<input type="text" placeholder="Sprint Name" ng-model="NewSpt1" ng-model-instant>
+      <button ng-click="addS(NewSpt1, p.name)">Create</button>
+    </div>
+  </div>
+  </div>
+  <!-- End Sprint view -->
+  <br><br>
+  <!-- delete completed tasks -->
+  <button ng-click="clearlist()">Clear Tasks</button>
+  <!-- completed tasks deleted -->
+
+  <!-- Create a new project button avalible in all view -->
+      <br><br><br>
+      <div style="float:left; display:block; width:100%;">
+        <button ng-click="showNPrj = !showNPrj" style="float:left;">
+          <div ng-show="!showNPrj">New Project</div>
+          <div ng-show="showNPrj">Hide Form</div>
+        </button>
+        <div ng-show="showNPrj" style="float:center">
+          Project Name:<input type="text" placeholder="Project Name" ng-model="NewProj1" ng-model-instant>
+          <button ng-click="addP(NewProj1)" style="width:inherit">Create</button>
         </div>
       </div>
-    </div>
-    <!-- End Sprint view -->
-    <br><br>
-    <!-- delete completed tasks -->
-    <button ng-click="clearlist()">Clear Tasks</button>
-    <!-- completed tasks deleted -->
-
-    <!-- Create a new project button outside of any view -->
-        <br><br><br>
-        <div style="float:left; display:block; width:100%;">
-          <button ng-click="showNPrj = !showNPrj" style="float:left;">
-            <div ng-show="!showNPrj">New Project</div>
-            <div ng-show="showNPrj">Hide Form</div>
-          </button>
-          <div ng-show="showNPrj" style="float:center">
-            Project Name:<input type="text" placeholder="Project Name" ng-model="NewProj1">
-            <button ng-click="addP(NewProj1)" style="width:inherit">Create</button>
-          </div>
-        </div>
 </div>
