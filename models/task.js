@@ -1,10 +1,11 @@
-var mongoose = require('mongoose');
-var User = require('./user');
-var Project = require('./project');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const User = require('./user');
+const Sprint = require('./sprint');
+const Project = require('./project');
+const Schema = mongoose.Schema;
 
 var taskSchema = {
-
+  _id:Schema.Types.ObjectId,
   name:{type:String, required: true},
   due:{type:Date},
   user:{type:Schema.Types.ObjectId, ref:'User', index:true},

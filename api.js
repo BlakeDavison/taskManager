@@ -13,6 +13,22 @@ module.exports = function(wagner)
         handleOne.bind(null, 'user', res));
     };
   }));
+  api.post('/user', wagner.invoke(function(User)
+  {
+    return function(req, res)
+    {
+      User.create(
+      {
+        name: 'test'
+      }, function(err, user)
+      {
+        if(err)
+        {
+          res.send(err);
+        }
+      });
+    };
+  }));
 //set the route to get a task by ID
   api.get('/task/id/:id', wagner.invoke(function(Task)
   {

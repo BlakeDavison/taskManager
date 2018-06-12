@@ -1,13 +1,14 @@
-var mongoose = require('mongoose');
-var Project = require('./project');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Project = require('./project');
+const Schema = mongoose.Schema;
 
 var sprintSchema = {
+   _id:Schema.Types.ObjectId,
   name:{type:String, required: true},
-  function:{type:String},
+  description:{type:String},
   due:{type:Date},
-  start:{type:Date},
-  project:{type:Schema.Types.ObjectId, ref:'Project', index:true}
+  started:{type:Boolean, default: false},
+  project:{type:Schema.Types.ObjectId, ref:'Project'}
 };
 
 module.exports = new mongoose.Schema(sprintSchema);
