@@ -93,7 +93,31 @@ describe('API', function(){
         done();
       });
     });
-  });/*
+  });
+
+  it('loads all tasks', function(done)
+  {
+    Task.create({_id:'50341373e894ad16347efe02', name:'do this'}, function(err, doc)
+    {
+      assert.ifError(err);
+      var url = URL_ROOT + '/tasks';
+      superagent.get(url, function(err, res)
+      {
+        assert.ifError(err);
+        var result;
+        assert.doesNotThrow(function()
+        {
+          result = JSON.parse(res.data.task);
+        });
+        assert.ok(result.task);
+        assert.equal(result.task._id, '50341373e894ad16347efe02');
+        done();
+      });
+    });
+  });
+
+
+  /*
 //this will test the basics of the project schema in the db
   it('loads a project by id', function(done)
   {

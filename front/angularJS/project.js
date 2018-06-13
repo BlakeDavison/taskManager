@@ -1,7 +1,19 @@
-app.controller('projectCtrl', function($scope, sVars){
+app.controller('projectCtrl', function($scope, sVars, $http){
   $scope.prj = sVars.getPrj();
   $scope.tlist = sVars.getTL();
   $scope.slist = sVars.getSP();
+  $http.get('http://localhost:3000/api/v1/tasks').
+    then(function(res){
+      $scope.tlist = res.data.task;
+    });
+  $http.get('http://localhost:3000/api/v1/sprints').
+    then(function(res){
+      $scope.slist = res.data.sprint;
+    });
+  $http.get('http://localhost:3000/api/v1/projects').
+    then(function(res){
+      $scope.prj = res.data.project;
+    });
   $scope.myt = {};
   $scope.sptv = {};
   $scope.addToSpt = {};
