@@ -1,25 +1,51 @@
 const express = require('express');
 const status = require('http-status');
 const mongoose = require('mongoose');
-
+/*A list of routes          and           functions       NOTE: all routes will have /api/v1 in front
+GET: /tasks                             -returns a list of all tasks
+DELETE: /tasks                          -deletes a task by id
+POST: /tasks                            -creates a new task
+GET: /tasks/user/:id                    -returns all tasks assigned to a user
+PUT:  /tasks/sprint                     -updates a tasks sprint assignment
+PUT:  /tasks/done                       -changes an array of tasks to completed
+PUT:  /tasks/ndone                      -changes a task to incomplete
+PUT:  /tasks/project                    -changes the project a task is assigned to
+GET:  /sprints                          -returns all sprints
+GET:  /projects                         -returns all projects
+GET:  /sprints/project/:id              -returns all sprints in a project
+*/
 module.exports = function(wagner)
 {
   var api = express.Router();
-// the three below are temperary (until i get cookie and sessions completed)
+
   api.get('/tasks', wagner.invoke(function(Task)
-  {
+  {//temp till sessions is implemented
     return function(req, res)
     {
       Task.find({},
         handleMany.bind(null, 'task', res));
     };
   }));
+  api.get('/tasks/user/:id', wagner.invoke(function(Task)
+  {//this will get all of the tasks assigned to the user
+    return function(req, res)
+    {
+      Task.
+        find({user: req.params.id}).
+      //  populate('user').
+        sort({name:1}).
+        exec(handleMany.bind(null,'tasks', res));
+    };
+  }));
   api.post('/tasks', wagner.invoke(function(Task)
-  {
+  {//create new task
     return function(req, res)
     {
       var t = new Task();
       t.name = req.body.name;
+      t.project = req.body.project;
+      t.sprint = req.body.sprint;
+      t.due = req.body.due;
       t._id = mongoose.Types.ObjectId();
       console.log(t);
       t.save(function(err)
@@ -29,8 +55,8 @@ module.exports = function(wagner)
       });
     };
   }));
-  api.put('/tasks', wagner.invoke(function(Task)
-  {
+  api.put('/tasks/sprint', wagner.invoke(function(Task)
+  {//updates sprint
     return function(req, res)
     {
       try {
@@ -48,10 +74,72 @@ module.exports = function(wagner)
       });
     };
   }));
+  api.put('/tasks/done', wagner.invoke(function(Task)
+  {//updates the completed tasks
+    return function(req, res)
+    {
+      try {
+        var tsk = req.body[0];
+      } catch (e) {
+        return res.
+          status(status.BAD_REQUEST).
+          json({error: 'No tasks selected'});
+      }
+      req.body.forEach(function(tk)
+      {
+        Task.findOneAndUpdate({_id: tk._id}, {$set:{complete:true}}, {new:true}, function(err, doc)
+        {
+          if (err){console.log(err);}
+          console.log(doc);
+        });
+      });
+      res.json({message:'updated.'});
+    };
+  }));
+  api.put('/tasks/ndone', wagner.invoke(function(Task)
+  {//updates the completed tasks
+    return function(req, res)
+    {
+
+      try {
+        var tsk = req.body;
+      } catch (e) {
+        return res.
+          status(status.BAD_REQUEST).
+          json({error: 'No tasks selected'});
+      }
+      Task.findOneAndUpdate({_id: req.body._id}, {$set:{complete:false}}, {new:true}, function(err, doc)
+      {
+        if (err){console.log(err);}
+        console.log(doc);
+      });
+      res.json({message:'updated.'});
+    };
+  }));
+  api.put('/tasks/project', wagner.invoke(function(Task)
+  {//updates sprint
+    return function(req, res)
+    {
+      try {
+        var tsk = req.body;
+      } catch (e) {
+        return res.
+          status(status.BAD_REQUEST).
+          json({error: 'No task selected'});
+      }
+      Task.findOneAndUpdate({_id: req.body._id}, {$set:{project:req.body.project}}, {new:true}, function(err, doc)
+      {
+        if (err){console.log(err);}
+        console.log(doc);
+        res.json({message:'updated.'});
+      });
+    };
+  }));
   api.delete('/tasks', wagner.invoke(function(Task)
   {
     return function(req, res)
     {
+      console.log(req.body);
       Task.findOneAndRemove({_id: req.body._id}, function(err)
       {
         if(err){console.log(err);res.json({error:err});}
@@ -111,35 +199,18 @@ module.exports = function(wagner)
         handleOne.bind(null, 'task', res));
     };
   }));
-// add a new task
-  api.post('/task', wagner.invoke(function(Task)
-  {
+  api.get('/sprints/project/:id', wagner.invoke(function(Sprint)
+  {//get all the sprints in a project
     return function(req, res)
     {
-      Task.create(
-      {
-        name: 'test'
-      }, function(err, task)
-      {
-        if(err)
-        {
-          res.send(err);
-        }
-      });
+      Sprint.
+        find({project: req.params.id}).
+        //populate('user').
+        sort({name:1}).
+        exec(handleMany.bind(null,'sprints', res));
     };
   }));
-//this will get all of the tasks assigned to the user
-api.get('/task/person/:id', wagner.invoke(function(Task)
-{
-  return function(req, res)
-  {
-    Task.
-      find({user: req.params.id}).
-    //  populate('user').
-      sort({name:1}).
-      exec(handleMany.bind(null,'tasks', res));
-  };
-}));
+
 //get all tasks in a project
 api.get('/task/project/:id', wagner.invoke(function(Task)
 {
@@ -172,17 +243,7 @@ api.get('/task/project/:id', wagner.invoke(function(Task)
     };
   }));
   //this will get all the sprints a project has
-  api.get('/sprint/project/:id', wagner.invoke(function(Sprint)
-  {
-    return function(req, res)
-    {
-      Sprint.
-        find({project: req.params.id}).
-        //populate('user').
-        sort({name:1}).
-        exec(handleMany.bind(null,'sprints', res));
-    };
-  }));*/
+  */
 
   return api;
 };

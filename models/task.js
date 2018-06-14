@@ -9,14 +9,11 @@ var taskSchema = {
   name:{type:String, required: true},
   due:{type:Date},
   user:{type:Schema.Types.ObjectId, ref:'User', index:true},
-  project:{type:Schema.Types.ObjectId, ref:'Project'},
-  sprint:{type:Schema.Types.ObjectId, ref:'Sprint'},
+  project:{type:Schema.Types.ObjectId, ref:'Project', default:"000000000000000000000001"},
+  sprint:{type:Schema.Types.ObjectId, ref:'Sprint', default:"000000000000000000000001"},
   tDepend:[{type:Number}],
-  progress:{
-    type:String,
-    enum:['IDed', 'Assigned', 'Started', 'Finished'],
-    default: 'IDed'//need to make this auto update when assigned
-  }
+  important:{type:Boolean, default:false},
+  complete:{type:Boolean, default:false}
 };
 var schema =  new mongoose.Schema(taskSchema);
 

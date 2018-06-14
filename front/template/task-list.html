@@ -1,12 +1,13 @@
 <div class="task-list container-fluid">
     <h2 id="Title">Task List</h2>
-    <div >
+    <div>
       Display Order:<select ng-init="selectedView = views[2]" ng-model="selectedView" ng-options="x for x in views">
       </select>
     </div>
+    <h3>Not Completed Tasks</h3>
     <ul>
-      <h4 ng-hide="tasklist.length" style="text-align: center">No tasks</h4>
-      <li class="links" ng-repeat="x in tasklist | orderBy:selectedView" class="TaskItem">
+      <h4 ng-hide="(tasklist | filter:{complete:false}).length" style="text-align: center">No tasks to complete</h4>
+      <li class="links" ng-repeat="x in tasklist | orderBy:selectedView | filter:{complete:false}" class="TaskItem">
         <input type="checkbox" ng-model="x.done"><label class="strikethrough">{{x.name}} in project {{x.project}}</label>
       </li>
     </ul>
@@ -15,7 +16,7 @@
       <div ng-show="!showForm">Add Task</div>
       <div ng-show="showForm">Hide Form</div>
     </button>
-    <button ng-click="emptyComplete()">Remove finished</button>
+    <button ng-click="emptyComplete()">Mark Done</button>
     <br><br><br>
     <div ng-show="showForm">
       <form>
@@ -28,4 +29,13 @@
         <button ng-click="addTask()">Add</button>
       </form>
     </div>
+    <h3>Completed Tasks</h3>
+    <ul>
+      <h4 ng-hide="(tasklist | filter:{complete:true}).length" style="text-align: center">No completed tasks</h4>
+      <li class="links" ng-repeat="x in tasklist | orderBy:selectedView | filter:{complete:!false}" class="TaskItem">
+        <label class="done">{{x.name}} in project {{x.project}}</label>
+        <button type="button" ng-click="nDone(x)" style="float:right; margin:0 !important;">Not Done</button>
+        <button type="button" ng-click="gone(x)" style="float:right; margin:0 !important;">Delete</button>
+      </li>
+    </ul>
 </div>

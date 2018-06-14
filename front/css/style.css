@@ -12,6 +12,9 @@ li.links{
 input[type=checkbox]:checked + label.strikethrough{
   text-decoration: line-through;
 }
+.done{
+  text-decoration: line-through;
+}
 button{
   border:none;
   width: 15%;
