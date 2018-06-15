@@ -1,7 +1,7 @@
 app.controller('projectCtrl', function($scope, sVars, $http){
-  $scope.prj = sVars.getPrj();
-  $scope.tlist = sVars.getTL();
-  $scope.slist = sVars.getSP();
+  $scope.prj;
+  $scope.tlist;
+  $scope.slist;
   $http.get('http://localhost:3000/api/v1/tasks').
     then(function(res){
       $scope.tlist = res.data.task;
@@ -17,96 +17,177 @@ app.controller('projectCtrl', function($scope, sVars, $http){
   $scope.myt = {};
   $scope.sptv = {};
   $scope.addToSpt = {};
-  // $scope.form = {};
+  $scope.index = [];
   $scope.CView = ["Project", "Sprint"];
   $scope.addT = function(t, p, i)
-  {//adds task
-    var tID = $scope.tlist.length;
-    $scope.tlist.push({name:t, project:p, id:tID});
+  {//adds task in project view
+    $http.post('http://localhost:3000/api/v1/tasks',JSON.stringify({name:t, project:p, sprint:"000000000000000000000001", due:$scope.duedate})).
+      then(function(res){console.log(res);});
+    $http.get('http://localhost:3000/api/v1/tasks').
+      then(function(res){ $scope.tlist = res.data.task; });
     //reset the value
     $scope.myt[i] = '';
-    console.log($scope.tlist);
-    sVars.setTL($scope.tlist);
   };
   $scope.addTas = function(t, p, s, si)
-  {//adds task
-    var tID = $scope.tlist.length;
-    $scope.tlist.push({name:t, project:p, id:tID, sprint:s});
+  {//adds task to a sprint
+    $http.post('http://localhost:3000/api/v1/tasks',JSON.stringify({name:t, project:p, sprint:s}));
+    $http.get('http://localhost:3000/api/v1/tasks').
+      then(function(res){ $scope.tlist = res.data.task; });
     $scope.sptv[si] = "";
-    sVars.setTL($scope.tlist);
   };
   $scope.addP = function(v)
   {//add project
-    var pID = $scope.prj.length;
-    $scope.prj.push({name:v, id:pID});
-    sVars.setPrj($scope.prj);
+    $http.post('http://localhost:3000/api/v1/projects',JSON.stringify({name:v})).
+      then(function(res){console.log(res);});
+    $http.get('http://localhost:3000/api/v1/projects').
+      then(function(res){
+        $scope.prj = res.data.project;
+      });
+
     $scope.NewProj1 = "";
   };
   $scope.addS = function(s,p)
   {
-    var sID = $scope.slist.length;
-    $scope.slist.push({name:s, project:p, id:sID});
+    $http.post('http://localhost:3000/api/v1/sprints',JSON.stringify({name:s, project:p})).
+      then(function(res){console.log(res);});
+    $http.get('http://localhost:3000/api/v1/sprints').
+      then(function(res){$scope.slist = res.data.sprint;});
     $scope.NewSpt1 = "";
-    sVars.setSP($scope.slist);
   };
   $scope.clearlist = function()
   {
-    $scope.tlist = $scope.tlist.filter(function(task)
+    var h = $scope.tlist.filter(function(task)
     {
-      return !task.done;
+      return task.done;
     });
-      sVars.setTL($scope.tlist);
+    $http.put('http://localhost:3000/api/v1/tasks/done', JSON.stringify(h)).
+    then(function(res){console.log(res);});
+    $http.get('http://localhost:3000/api/v1/tasks').
+      then(function(res)
+      { $scope.tlist = res.data.task; });
+  };
+  $scope.notDone = function(a)
+  {
+    $http.put('http://localhost:3000/api/v1/tasks/ndone', JSON.stringify(a)).
+    then(function(res){console.log(res);});
+    $http.get('http://localhost:3000/api/v1/tasks').
+      then(function(res)
+      {$scope.tlist = res.data.task;});
+  };
+  $scope.going = function(a)
+  {
+    var r = confirm("Do you want to delete "+a.name+"?");
+    if(r){
+      var hold = JSON.stringify(a);
+      console.log(hold);
+      $http(
+      {
+        method: 'DELETE',
+        url: 'http://localhost:3000/api/v1/tasks',
+        data: JSON.stringify(a),
+        headers: {'Content-Type': 'application/json;charset=utf-8'}
+      })
+      $http.get('http://localhost:3000/api/v1/tasks').
+        then(function(res){ $scope.tlist = res.data.task; });
+    }
   };
   $scope.deleteSprint = function(v)
   {
-    var a = confirm("Delete " + v + " with all Tasks");
+    var a = confirm("Delete " + v.name + " with all Tasks");
     if (a)
     {
-      $scope.tlist = $scope.tlist.filter(function(c)
-      {
-        return c.sprint != v;
+      var t = $scope.tlist.filter(function(c)
+      { return c.sprint == v._id; });//this returns all tasks that have are in this sprint
+      console.log(t);
+      $http(
+      {//delete the sprint
+        method: 'DELETE',
+        url: 'http://localhost:3000/api/v1/sprints',
+        data: JSON.stringify(v),
+        headers: {'Content-Type': 'application/json;charset=utf-8'}
       });
-      $scope.slist = $scope.slist.filter(function(b)
+      $http.get('http://localhost:3000/api/v1/sprints').
+        then(function(res){ $scope.slist = res.data.sprint; });
+      t.forEach(function(task)
       {
-        return b.name != v;
+        $http(
+        {//delete the tasks in the sprint
+          method: 'DELETE',
+          url: 'http://localhost:3000/api/v1/tasks',
+          data: JSON.stringify(task),
+          headers: {'Content-Type': 'application/json;charset=utf-8'}
+        });
       });
-      sVars.setTL($scope.tlist);
-      sVars.setSP($scope.slist);
+      $http.get('http://localhost:3000/api/v1/tasks').
+        then(function(res){ $scope.tlist = res.data.task; });
     }
   };
-  $scope.deleteP = function(name)
+  $scope.deleteP = function(proj)
   {
-    var a = confirm("Delete Project " + name + " and all it Sprints and Tasks?");
+    var a = confirm("Delete Project " + proj.name + " and all it Sprints and Tasks?");
     if (a)
     {
-      $scope.tlist = $scope.tlist.filter(function(task)
+      var tl = $scope.tlist.filter(function(task)
       {//remove all tasks for the project
         return task.project != name;
       });
-      $scope.slist = $scope.slist.filter(function(sprint)
+      var sl = $scope.slist.filter(function(sprint)
       {//remove all sprints for the project
         return sprint.project != name;
       });
-      $scope.prj = $scope.prj.filter(function(project)
-      {//delete the project
-        return project.name != name;
+      tl.forEach(function(task)
+      {
+        $http(
+        {//delete the tasks in the sprint
+          method: 'DELETE',
+          url: 'http://localhost:3000/api/v1/tasks',
+          data: JSON.stringify(task),
+          headers: {'Content-Type': 'application/json;charset=utf-8'}
+        });
       });
-      sVars.setTL($scope.tlist);
-      sVars.setSP($scope.slist);
-      sVars.setPrj($scope.prj);
+      $http.get('http://localhost:3000/api/v1/tasks').
+        then(function(res){ $scope.tlist = res.data.task; });
+        sl.forEach(function(sprint)
+        {
+          $http(
+          {//delete the tasks in the sprint
+            method: 'DELETE',
+            url: 'http://localhost:3000/api/v1/sprints',
+            data: JSON.stringify(sprint),
+            headers: {'Content-Type': 'application/json;charset=utf-8'}
+          });
+        });
+        $http.get('http://localhost:3000/api/v1/sprint').
+          then(function(res){ $scope.slist = res.data.sprint; });
+        $http(
+        {//delete the tasks in the sprint
+          method: 'DELETE',
+          url: 'http://localhost:3000/api/v1/projects',
+          data: JSON.stringify(proj),
+          headers: {'Content-Type': 'application/json;charset=utf-8'}
+        });
+        $http.get('http://localhost:3000/api/v1/projects').
+          then(function(res){
+            $scope.prj = res.data.project;
+          });
     }
   };
-  $scope.changeSpt = function(v)
+  $scope.changeSpt = function(v, s)
   {
-    var index = $scope.tlist.indexOf(v);
-    $scope.tlist[index].sprint = $scope.addToSpt[v.id].name;
-    sVars.setTL($scope.tlist);
+    v.sprint = $scope.index[s];
+    console.log(v.sprint);
+    $http.put('http://localhost:3000/api/v1/tasks/sprint', JSON.stringify(v)).
+      then(function(res){console.log(res);});
+    $http.get('http://localhost:3000/api/v1/tasks').
+      then(function(res){ $scope.tlist = res.data.task; });
+  }
+  $scope.addTNS = function(tName, p)
+  {
+    $http.post('http://localhost:3000/api/v1/tasks',JSON.stringify({name:tName, project:p._id, sprint:"000000000000000000000001"})).
+      then(function(res){console.log(res);});
+    $http.get('http://localhost:3000/api/v1/tasks').
+      then(function(res){
+        $scope.tlist = res.data.task;
+      });
   }
 });
-
-// app.directive('projectList', function(){
-//   return{
-//     restrict: 'E',
-//     templateUrl: 'template/project-list.html'
-//   }
-// });

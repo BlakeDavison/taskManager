@@ -2,17 +2,22 @@ const express = require('express');
 const status = require('http-status');
 const mongoose = require('mongoose');
 /*A list of routes          and           functions       NOTE: all routes will have /api/v1 in front
-GET: /tasks                             -returns a list of all tasks
-DELETE: /tasks                          -deletes a task by id
-POST: /tasks                            -creates a new task
-GET: /tasks/user/:id                    -returns all tasks assigned to a user
-PUT:  /tasks/sprint                     -updates a tasks sprint assignment
-PUT:  /tasks/done                       -changes an array of tasks to completed
-PUT:  /tasks/ndone                      -changes a task to incomplete
-PUT:  /tasks/project                    -changes the project a task is assigned to
-GET:  /sprints                          -returns all sprints
-GET:  /projects                         -returns all projects
-GET:  /sprints/project/:id              -returns all sprints in a project
+GET:     /tasks                             -returns a list of all tasks
+DELETE:  /tasks                             -deletes a task by id
+POST:    /tasks                             -creates a new task
+GET:     /tasks/user/:id                    -returns all tasks assigned to a user
+PUT:     /tasks/sprint                      -updates a tasks sprint assignment
+PUT:     /tasks/done                        -changes an array of tasks to completed
+PUT:     /tasks/ndone                       -changes a task to incomplete
+PUT:     /tasks/project                     -changes the project a task is assigned to
+GET:     /sprints                           -returns all sprints
+POST:    /sprints                           -create new sprint
+DELETE:  /sprints                           -delete a sprint
+GET:     /projects                          -returns all projects
+POST:    /projects                          -creates new project
+DELETE:  /projects                          -delete a project
+GET:     /sprints/project/:id               -returns all sprints in a project
+
 */
 module.exports = function(wagner)
 {
@@ -100,7 +105,6 @@ module.exports = function(wagner)
   {//updates the completed tasks
     return function(req, res)
     {
-
       try {
         var tsk = req.body;
       } catch (e) {
@@ -156,6 +160,18 @@ module.exports = function(wagner)
         handleMany.bind(null, 'sprint', res));
     };
   }));
+  api.delete('/sprints', wagner.invoke(function(Sprint)
+  {
+    return function(req, res)
+    {
+      console.log(req.body);
+      Sprint.findOneAndRemove({_id: req.body._id}, function(err)
+      {
+        if(err){console.log(err);res.json({error:err});}
+        return res.json({message:'deleted.'});
+      });
+    };
+  }));
   api.get('/projects', wagner.invoke(function(Project)
   {
     return function(req, res)
@@ -164,7 +180,33 @@ module.exports = function(wagner)
         handleMany.bind(null, 'project', res));
     };
   }));
-
+  api.delete('/projects', wagner.invoke(function(Project)
+  {
+    return function(req, res)
+    {
+      console.log(req.body);
+      Project.findOneAndRemove({_id: req.body._id}, function(err)
+      {
+        if(err){console.log(err);res.json({error:err});}
+        return res.json({message:'deleted.'});
+      });
+    }
+  }));
+  api.post('/projects', wagner.invoke(function(Project)
+  {//create new task
+    return function(req, res)
+    {
+      var t = new Project();
+      t.name = req.body.name;
+      t._id = mongoose.Types.ObjectId();
+      console.log(t);
+      t.save(function(err)
+      {
+        if (err) {console.log(err);return res.json({error:err});}
+        return res.json({message:"saved"});
+      });
+    };
+  }));
 //set the route in order to get a user by ID
   api.get('/user/id/:id', wagner.invoke(function(User)
   {
@@ -210,7 +252,22 @@ module.exports = function(wagner)
         exec(handleMany.bind(null,'sprints', res));
     };
   }));
-
+  api.post('/sprints', wagner.invoke(function(Sprint)
+  {//create new task
+    return function(req, res)
+    {
+      var t = new Sprint();
+      t.name = req.body.name;
+      t.project = req.body.project;
+      t._id = mongoose.Types.ObjectId();
+      console.log(t);
+      t.save(function(err)
+      {
+        if (err) {console.log(err);return res.json({error:err});}
+        return res.json({message:"saved"});
+      });
+    };
+  }));
 //get all tasks in a project
 api.get('/task/project/:id', wagner.invoke(function(Task)
 {
@@ -223,27 +280,6 @@ api.get('/task/project/:id', wagner.invoke(function(Task)
       exec(handleMany.bind(null,'tasks', res));
   };
 }));
-/*
-//This will get a project by ID
-  api.get('/project/id/:id', wagner.invoke(function(Project)
-  {
-    return function(req, res)
-    {
-      Project.findOne({_id: req.params.id},
-        handleOne.bind(null, 'project', res));
-    };
-  }));
-  //get sprint by id
-  api.get('/sprint/id/:id', wagner.invoke(function(Sprint)
-  {
-    return function(req, res)
-    {
-      Sprint.findOne({_id: req.params.id},
-        handleOne.bind(null, 'sprint', res));
-    };
-  }));
-  //this will get all the sprints a project has
-  */
 
   return api;
 };
