@@ -6,7 +6,7 @@
   </div>
 
 <!-- List the tasks in the project view -->
-  <h2 ng-hide="prj.length">No projects</h2>
+  <h3 ng-hide="prj.length" style="text-align:center">No projects</h3>
   <div ng-repeat="p in prj" ng-show="selectedV == 'Project'">
     <h3><b>{{p.name}}:</b></h3>
     <div style="margin:2%">

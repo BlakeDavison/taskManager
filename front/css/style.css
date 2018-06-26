@@ -34,3 +34,6 @@ ul.myNav{
   display: inline-flex;
   padding-left: 20px;
 }
+.noMar{
+  margin: 0px !important;
+}

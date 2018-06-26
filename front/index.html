@@ -11,33 +11,29 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
      <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
     <title>tasks n' stuff</title>
   </head>
   <body ng-app="pma" >
     <nav class="navbar navbar-default ">
       <div class="container-fluid myNav">
         <div class="navbar-header">
-          <a href="/" class="navbar-brand" style="color:#006600">PMA</a>
+          <a class="navbar-brand" style="color:#006600">PMA</a>
         </div>
         <ul class="nav navbar-nav myNav">
-          <li class="nav-item"><a  href="#/">Task</a></li>
-          <li class="nav-item"><a href="#project">Project</a></li>
+          <li class="nav-item"><a  href="#/task">Task</a></li>
+          <li class="nav-item"><a href="#/project">Project</a></li>
         </ul>
         <div style="position: absolute; right: 20px;">
-          <button class="logger" style="width:inherit">Log In</button>
+          <button class="logger" style="width:inherit"><a href="#/" style="color:white">Log In</a></button>
         </div>
-
       </div>
     </nav>
-
     <ng-view></ng-view>
-
     <!-- bring in angular scripts -->
-
     <script type="text/javascript" src="./angInit.js"></script>
     <script type="text/javascript" src="./angularJS/project.js"></script>
     <script type="text/javascript" src="./angularJS/task.js"></script>
+    <script type="text/javascript" src="./angularJS/login.js"></script>
     </script>
   </body>
 </html>

@@ -1,0 +1,58 @@
+<div class="login container-fluid">
+  <div ng-hide="createNAcc">
+    <div style="text-align: center">
+      <form name="logme">
+        Login to your account:<br>
+        <label>email:</label>
+        <input type="email" name="uname" placeholder="Username" ng-model="uname" required/>
+        <div ng-show="!logme.uname.$valid" style="color:red">
+          Enter an email.
+        </div>
+        <br>
+        <label>Password:</label>
+        <input type="text" name="pword" placeholder="Password" ng-model="pword" required/>
+        <div ng-show="!pword.length" style="color:red">
+          Enter a password.
+        </div>
+        <br>
+        <button type="button" ng-click="Login()" class="noMar">Login</button>
+        <br><br>
+      </form>
+    </div>
+    <div style="float:right">
+      Register for a new Account:
+    </div><br>
+    <button type="button" ng-click="createNAcc = !createNAcc" class="noMar">New Account</button>
+  </div>
+  <br>
+  <div ng-show="createNAcc">
+    <form name="register">
+      <div style="text-align: center">
+      <label>Email:</label>
+      <input type="email" name="nEmail" ng-model="nEmail" required/>
+      <div ng-show="!register.nEmail.$valid" style="color:red">
+        Enter an email.
+      </div>
+      <br>
+      <label>Please select a password:</label>
+      <input type="password" ng-model="nPword" name="nPword" required/>
+      <div ng-show="!nPword.length" style="color:red">
+        Enter a Password.
+      </div>
+      <br>
+      <label>Please reenter password:</label>
+      <input type="password" ng-model="reEnter" name="reEnter" required/>
+      <div ng-show="nPword != reEnter" style="color:red">
+        Passwords do not match.
+      </div>
+      <button type="button" class="noMar" ng-click="Register()">Register</button>
+      <br><br>
+    </form>
+    </div>
+    <div style="float: right">
+      Already have an account?:
+    </div>
+    <br>
+    <button type="button" ng-click="createNAcc = !createNAcc" class="noMar" style="float:right">Sign in</button>
+  </div>
+</div>

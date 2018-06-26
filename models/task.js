@@ -10,7 +10,6 @@ var taskSchema = {
   due:{type:Date},
   user:{type:Schema.Types.ObjectId, ref:'User', index:true},
   project:{type:Schema.Types.ObjectId, ref:'Project', default:"000000000000000000000001"},
-  sprint:{type:Schema.Types.ObjectId, ref:'Sprint', default:"000000000000000000000001"},
   tDepend:[{type:Number}],
   important:{type:Boolean, default:false},
   complete:{type:Boolean, default:false}

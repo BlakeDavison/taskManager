@@ -34,7 +34,7 @@ var app = angular.module('pma',['ngRoute']).service('sVars', function(){
 
 app.config(function($routeProvider){
   $routeProvider
-    .when('/', {
+    .when('/task', {
       templateUrl: './template/task-list.html',
       controller: 'taskCtrl'
     })
@@ -42,7 +42,7 @@ app.config(function($routeProvider){
       templateUrl: './template/project-list.html',
       controller: 'projectCtrl'
     })
-     .when('/login', {
+     .when('/', {
        templateUrl: './template/login.html',
        controller: 'loginCtrl'
      });
