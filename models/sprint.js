@@ -6,6 +6,7 @@ var sprintSchema = {
    _id:Schema.Types.ObjectId,
   name:{type:String, required: true},
   description:{type:String},
+  user:{type:Schema.Types.ObjectId, ref:'User'},
   due:{type:Date},
   started:{type:Boolean, default: false},
   project:{type:Schema.Types.ObjectId, ref:'Project'}

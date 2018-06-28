@@ -4,25 +4,24 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const saltRounds = 9;
-/*A list of routes          and           functions       NOTE: all routes will have /api/v1 in front
-GET:     /tasks                             -returns a list of all tasks
-GET:     /tasks/users                       -returns all tasks assigned to current user
+/*A list of routes          and           what they do    NOTE: all routes will have /api/v1 in front
 DELETE:  /tasks                             -deletes a task by id
+GET:     /tasks/users                       -returns all tasks assigned to current user
 POST:    /tasks                             -creates a new task
 PUT:     /tasks/sprint                      -updates a tasks sprint assignment
 PUT:     /tasks/done                        -changes an array of tasks to completed
 PUT:     /tasks/ndone                       -changes a task to incomplete
 PUT:     /tasks/project                     -changes the project a task is assigned to
-GET:     /sprints                           -returns all sprints
-POST:    /sprints                           -create new sprint
-DELETE:  /sprints                           -delete a sprint
-GET:     /sprints/project/                  -returns all sprints in a project
-GET:     /projects                          -returns all projects
+GET:     /tasks/project                     -changes the project a task is assigned to
 GET:     /projects/users                    -returns all projects a user is on
-POST:    /projects                          -creates new project
+DELETE:  /sprints                           -delete a sprint
+POST:    /sprints                           -create new sprint
+GET:     /sprints/project/                  -returns all sprints in a project
+GET:     /projects/users                    -returns all projects assigned to current user
 DELETE:  /projects                          -delete a project
-POST:    /users                             -creates a new user
+POST:    /projects                          -creates new project
 GET:     /users/id                          -get user by id
+POST:    /users                             -creates a new user
 POST:    /login                             -create a session
 */
 module.exports = function(wagner)
@@ -33,7 +32,6 @@ module.exports = function(wagner)
   {//delete a task
     return function(req, res)
     {
-      console.log(req.body);
       Task.findOneAndRemove({_id: req.body._id}, function(err)
       {
         if(err){console.log(err);return res.status(500).send();}
@@ -153,37 +151,18 @@ module.exports = function(wagner)
         exec(handleMany.bind(null,'tasks', res));
     };
   }));
-  api.get('/sprints/users', wagner.invoke(function(Sprint, Project)
+  api.get('/sprints/users', wagner.invoke(function(Sprint)
   {// get all the sprints in a user
     return function(req, res)
     {
-      Project.find({user:req.session.user}, function(err, prj)
-      {
-        if (err){console.log(err);res.status(status.INTERNAL_SERVER_ERROR).send();}
-        if(prj.length)
-        {
-          console.log(prj);
-          let resp = [];
-          for(var i = 0; i < prj.length; i++)
-          {
-            Sprint.find({project:prj[i]._id}, function(err, sprint)
-            {
-              console.log(sprint);
-              if (err){console.log(err);res.status(status.INTERNAL_SERVER_ERROR).send();}
-              resp.push(sprint);
-            });
-          }
-          res.send(resp);
-        }
-        else{res.send([]);}
-      });
+      Sprint.find({user: req.session.user},
+        handleMany.bind(null, 'sprint', res));
     };
   }));
   api.delete('/sprints', wagner.invoke(function(Sprint)
   {//delete a sprint
     return function(req, res)
     {
-      console.log(req.body);
       Sprint.findOneAndRemove({_id: req.body._id}, function(err)
       {
         if(err){console.log(err);return res.status(500).send();}
@@ -198,8 +177,8 @@ module.exports = function(wagner)
       var t = new Sprint();
       t.name = req.body.name;
       t.project = req.body.project;
+      t.user = req.session.user;
       t._id = mongoose.Types.ObjectId();
-      console.log(t);
       t.save(function(err)
       {
         if (err) {console.log(err);return res.status(status.INTERNAL_SERVER_ERROR).send();}
@@ -223,7 +202,7 @@ module.exports = function(wagner)
     return function(req, res)
     {
       Project.find({user:req.session.user},
-        handleMany.bind(null, 'proejct', res));
+        handleMany.bind(null, 'project', res));
     };
   }));
   api.delete('/projects', wagner.invoke(function(Project)
@@ -275,7 +254,7 @@ module.exports = function(wagner)
         n.save(function(err, nUser)
         {
           if(err){console.log(err); return res.status(status.INTERNAL_SERVER_ERROR).send();}
-          return res.status(status.OK).send();
+          return res.status(status.OK).json({user:req.session.user});
         });
       });
     }
@@ -286,14 +265,13 @@ module.exports = function(wagner)
     {
       User.findOne({email:req.body.email}, function(err, user)
       {
-        if(err){console.log(err);return res.status(status.INTERNAL_SERVER_ERROR).send();}
+        if(err){console.log('err:'+err);return res.status(status.INTERNAL_SERVER_ERROR).send();}
         if(!user){return res.status(status.UNAUTHORIZED).send();}
         bcrypt.compare(req.body.password, user.password, function(err, resp)
         {
           if(resp)
           {
             req.session.user = user._id;
-            req.session.projects = user.projects;
             return res.status(status.OK).json({user:req.session.user});
           }
           else{return res.status(status.UNAUTHORIZED).send();}
@@ -302,6 +280,7 @@ module.exports = function(wagner)
     };
   }));
 
+  //These were for dev options
   api.get('/test/set/session', wagner.invoke(function(User)
   {
     return function(req, res)
@@ -317,8 +296,7 @@ module.exports = function(wagner)
       res.status(status.OK).json({session:req.session.user});
     };
   }));
-  //These were for dev options
-  
+
   return api;
 };
 //function definitons to apply DRY-ness

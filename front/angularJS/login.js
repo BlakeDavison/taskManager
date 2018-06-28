@@ -1,14 +1,15 @@
-app.controller('loginCtrl', function($scope)
+app.controller('loginCtrl', function($scope, $http)
 {
     $scope.createNAcc = false;
-    $scope.Login = function(encrpw)
+    $scope.Login = function()
     {
+      console.log('test');
       if($scope.logme.uname.$valid && $scope.pword.length)
       {
-        $http.post('http://localhost:3000/api/v1/login', JSON.stringify({name:$scope.uname, password:encrpw})).
+        $http.post('http://localhost:3000/api/v1/login', JSON.stringify({email:$scope.uname, password:$scope.pword})).
           then(function(res)
           {//routing
-            if(res.user){self.location = "http://localhost:3000/#/";}
+            if(res.status === 200){self.location = "http://localhost:3000/#/task";}
             else{alert("Invalid Username and Password.");}
           });
       }
@@ -16,6 +17,7 @@ app.controller('loginCtrl', function($scope)
     };
     $scope.Register = function()
     {
+      console.log('test');
       if($scope.register.nEmail.$valid && $scope.nPword == $scope.reEnter)
       {
         $http.post('http://localhost:3000/api/v1/users',JSON.stringify({name:$scope.nEmail, password:$scope.nPword}));

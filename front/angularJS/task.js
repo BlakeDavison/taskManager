@@ -16,7 +16,7 @@ app.controller('taskCtrl', function($scope, sVars, $http)
     });
     $http.get('http://localhost:3000/api/v1/projects/users').
       then(function(res){
-        $scope.prj = res.data.sprint;
+        $scope.prj = res.data.project;
       });
   $scope.addTask = function()
   {

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const expressValidator = require('express-validator');
+const cookieParser = require('cookie-parser');
 
 require('./models/models')(wagner);
 
@@ -12,7 +13,8 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(expressValidator());
-app.use(session({secret:"ThisIsHereForDevOnly", resave:true, saveUninitialized:true, store: new FileStore()}));
+app.use(cookieParser());
+app.use(session({secret:"ThisIsHereForDevOnly", resave:false, saveUninitialized:false}));
 app.use('/api/v1', require('./api')(wagner));
 
 //This makes the html files avalible to the server.

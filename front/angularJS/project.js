@@ -12,6 +12,7 @@ app.controller('projectCtrl', function($scope, sVars, $http){
     });
   $http.get('http://localhost:3000/api/v1/projects/users').
     then(function(res){
+      console.log(res.data);
       $scope.prj = res.data.project;
     });
   $scope.myt = {};
@@ -24,7 +25,7 @@ app.controller('projectCtrl', function($scope, sVars, $http){
     $http.post('http://localhost:3000/api/v1/tasks',JSON.stringify({name:t, project:p, sprint:"000000000000000000000001", due:$scope.duedate})).
       then(function(res){console.log(res);});
     $http.get('http://localhost:3000/api/v1/tasks/users').
-      then(function(res){ $scope.tlist = res.data.task; });
+      then(function(res){$scope.tlist = res.data.task;});
     //reset the value
     $scope.myt[i] = '';
   };
@@ -32,18 +33,16 @@ app.controller('projectCtrl', function($scope, sVars, $http){
   {//adds task to a sprint
     $http.post('http://localhost:3000/api/v1/tasks',JSON.stringify({name:t, project:p, sprint:s}));
     $http.get('http://localhost:3000/api/v1/tasks/users').
-      then(function(res){ $scope.tlist = res.data.task; });
+      then(function(res){console.log(res.data);$scope.tlist = res.data.task;});
     $scope.sptv[si] = "";
   };
-  $scope.addP = function(v)
+  $scope.addP = function()
   {//add project
-    $http.post('http://localhost:3000/api/v1/projects',JSON.stringify({name:v})).
-      then(function(res){console.log(res);});
+    $http.post('http://localhost:3000/api/v1/projects',JSON.stringify({name:$scope.NewProj1})).
+      then(function(res){});
+    console.log('post complete');
     $http.get('http://localhost:3000/api/v1/projects/users').
-      then(function(res){
-        $scope.prj = res.data.project;
-      });
-
+      then(function(res){console.log('get complete');$scope.prj = res.data.project;});
     $scope.NewProj1 = "";
   };
   $scope.addS = function(s,p)
@@ -57,9 +56,7 @@ app.controller('projectCtrl', function($scope, sVars, $http){
   $scope.clearlist = function()
   {
     var h = $scope.tlist.filter(function(task)
-    {
-      return task.done;
-    });
+    { return task.done; });
     $http.put('http://localhost:3000/api/v1/tasks/done', JSON.stringify(h)).
     then(function(res){console.log(res);});
     $http.get('http://localhost:3000/api/v1/tasks/users').
