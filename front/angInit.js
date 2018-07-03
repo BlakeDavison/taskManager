@@ -3,8 +3,12 @@ var app = angular.module('pma',['ngRoute']).service('sVars', function(){
   var tasks = [{name:"test1", project:"z", sprint:"sprint2", due:"2018-12-03", id:0}, {name:"test2", project:"b", sprint:"unas", due:"2018-10-03", id:1}];
   var sprints = [{name:"sprint1", project:"b"}, {name:"sprint2", project:"z"}];
   var user = [{uname:"test", pword:"asdf"}, {uname:"otest", pword:"qwerty"}];
+  var url= 'http://192.168.1.3:3000';
   return{
     //setters and getters
+    getURL: function(){
+      return url;
+    },
     getPrj: function () {
       return projects;
     },

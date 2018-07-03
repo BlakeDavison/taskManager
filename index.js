@@ -23,5 +23,5 @@ app.get('*', function(req, res)
 { // load the single view file (angular will handle the page changes on the front-end)
     res.sendFile(__dirname + '/front/index.html');
 });
-app.listen(3000);
+app.listen(3000, "0.0.0.0");
 console.log('It is working! It is functioning properly.');

@@ -8,7 +8,7 @@
     <ul>
       <h4 ng-hide="(tasklist | filter:{complete:false}).length" style="text-align: center">No tasks to complete</h4>
       <li class="links" ng-repeat="x in tasklist | orderBy:selectedView | filter:{complete:false}" class="TaskItem">
-        <input type="checkbox" ng-model="x.done"><label class="strikethrough">{{x.name}} in project {{x.project}}</label>
+        <input type="checkbox" ng-model="x.done"><label class="strikethrough">{{x.name}}</label>
       </li>
     </ul>
     <!-- Form -->

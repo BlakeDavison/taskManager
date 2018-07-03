@@ -1,7 +1,7 @@
 <div class="project-list container-fluid">
   <div class="">
     <h2>Project list</h2>
-    <div style="float:right">Display:<select ng-init="selectedV = CView[0]" ng-model="selectedV" ng-options="x for x in CView">
+    <h3><div style="float:right">Display:<select ng-init="selectedV = CView[0]" ng-model="selectedV" ng-options="x for x in CView"></h3>
     </select></div>
   </div>
 
@@ -9,7 +9,7 @@
   <h3 ng-hide="prj.length" style="text-align:center">No projects</h3>
   <div ng-repeat="p in prj" ng-show="selectedV == 'Project'">
     <h3><b>{{p.name}}:</b></h3>
-    <div style="margin:2%">
+    <div class="indent">
       <div ng-hide="(tlist | filter:{project : p._id}).length" style="text-align:center"> <h4>No Tasks in project {{p.name}}.</h4></div>
       <ul>
         <h3>To Do:</h3>
@@ -44,16 +44,23 @@
     <!-- list each project -->
     <div ng-repeat="p in prj">
       <h3><b>{{p.name}}:</b></h3>
-      <div style="margin:2%">
+      <div class="indent">
         <!-- list each sprint -->
         <div ng-hide="(slist | filter:{project: p._id}).length" style="text-align: center"><h4>No Sprints in project {{p.name}}</h4></div>
         <div ng-repeat="s in slist | filter:{project: p._id}">
           <h4>{{s.name}}:</h4>
-          <div style="margin:2%">
+          <div class="indent">
             <div ng-hide="(tlist | filter:{project: p._id, sprint:s._id}).length" style="text-align: center"><h4>No Tasks in sprint {{s.name}}</h4></div>
             <ul>
-              <li class="links" ng-repeat="t in tlist | filter:{project: p._id, sprint: s._id}">
+              <h4>To Do:</h4>
+              <li class="links" ng-repeat="t in tlist  | filter:{project : p._id, sprint: s._id, complete:false}">
                 <input type="checkbox" ng-model="t.done"><label class="strikethrough">{{t.name}}</label>
+              </li>
+              <h4>Complete:</h4>
+              <li class="links" ng-repeat="t in tlist  | filter:{project : p._id, sprint: s._id, complete:true}">
+                <label class="done">{{t.name}}</label>
+                <button type="button" ng-click="notDone(t)" style="float:right; margin:0 !important;">Not Done</button>
+                <button type="button" ng-click="going(t)" style="float:right; margin:0 !important;">Delete</button>
               </li>
             </ul>
             <button ng-click="deleteSprint(s)">Delete Sprint</button>
@@ -73,12 +80,29 @@
         </div>
         <!-- end of repeat for each sprint -->
 
-          <h4>No Sprint:</h4>
+        <h4>No Sprint:</h4>
+        <div class="indent">
           <ul>
+
+            <h4>To Do:</h4>
+            <li class="links" ng-repeat="t in tlist  | filter:{project : p._id, sprint: '000000000000000000000001', complete:false}">
+              <input type="checkbox" ng-model="t.done"><label class="strikethrough">{{t.name}}</label>
+              <div style="float:right" ng-show="(slist | filter:{project: p._id}).length">
+                <select ng-model="index[$index]" ng-options="x.name for x in (slist | filter:{project: p._id})"></select>
+                <button ng-click="changeSpt(tl, $index)" style="width:auto;margin:0px !important">Add to Sprint</button>
+              </div>
+            </li>
+            <h4>Complete:</h4>
+            <li class="links" ng-repeat="t in tlist  | filter:{project : p._id, sprint: '000000000000000000000001', complete:true}">
+              <label class="done">{{t.name}}</label>
+              <button type="button" ng-click="notDone(t)" style="float:right; margin:0 !important;">Not Done</button>
+              <button type="button" ng-click="going(t)" style="float:right; margin:0 !important;">Delete</button>
+            </li>
+
              <li ng-repeat="tl in tlist | filter:{complete:false}" ng-if="tl.project == p._id  && tl.sprint=='000000000000000000000001'" class="links">
               <input type="checkbox" ng-model="tl.done"><label class="strikethrough">{{tl.name}}</label>
               <!-- add a sprint select dropdown -->
-              <div style="float:right">
+              <div style="float:right" ng-show="(slist | filter:{project: p._id}).length">
                 <select ng-model="index[$index]" ng-options="x.name for x in (slist | filter:{project: p._id})"></select>
                 <button ng-click="changeSpt(tl, $index)" style="width:auto;margin:0px !important">Add to Sprint</button>
               </div>
@@ -95,21 +119,23 @@
               <button ng-click="addTNS(t, p)">Add</button>
             </form>
           </div>
+        </div>
     <!-- end of repeat for each project -->
+      </div>
+      <br><br>
+    <!-- Sprint adder -->
+      <button ng-click="showNSpt = !showNSpt">
+        <div ng-show="!showNSpt">Add Sprint</div>
+        <div ng-show="showNSpt">Hide Form</div>
+      </button>
+      <div ng-show="showNSpt">
+        Sprint Name:<input type="text" placeholder="Sprint Name" ng-model="NewSpt1" ng-model-instant>
+        <button ng-click="addS(NewSpt1, p._id); NewSpt1='';">Create</button>
+      </div>
     </div>
     <br><br>
     <button ng-click="deleteP(p.name)">Delete Project</button>
-    <br><br>
-    <!-- Sprint adder -->
-    <button ng-click="showNSpt = !showNSpt">
-      <div ng-show="!showNSpt">Add Sprint</div>
-      <div ng-show="showNSpt">Hide Form</div>
-    </button>
-    <div ng-show="showNSpt">
-      Sprint Name:<input type="text" placeholder="Sprint Name" ng-model="NewSpt1" ng-model-instant>
-      <button ng-click="addS(NewSpt1, p._id)">Create</button>
-    </div>
-  </div>
+
   </div>
   <!-- End Sprint view -->
   <br><br>

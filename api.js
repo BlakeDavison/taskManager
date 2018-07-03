@@ -166,7 +166,7 @@ module.exports = function(wagner)
       Sprint.findOneAndRemove({_id: req.body._id}, function(err)
       {
         if(err){console.log(err);return res.status(500).send();}
-        return res.status(status.OK);
+        return res.status(status.OK).send();
       });
     };
   }));
@@ -267,6 +267,7 @@ module.exports = function(wagner)
       {
         if(err){console.log('err:'+err);return res.status(status.INTERNAL_SERVER_ERROR).send();}
         if(!user){return res.status(status.UNAUTHORIZED).send();}
+
         bcrypt.compare(req.body.password, user.password, function(err, resp)
         {
           if(resp)

@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-var _ = require('underscore');
+const mongoose = require('mongoose');
+const _ = require('underscore');
 
 module.exports = function(wagner)
 {
