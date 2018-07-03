@@ -1,0 +1,49 @@
+User stories[MVP]:(The use cases assumes you have logged in and are on the task tab[except log in])
+As a user I want a place where I can store and plan out my sprints.
+-click on the Project tab in the navbar
+-select the Sprint view
+-here we can add tasks to the sprints and create new sprints
+
+As a user I want to be able to assign tasks to my sprints.
+[task list view]
+-click add new task
+-select project
+-select sprint to be assigned to
+[sprint view]
+-click on the Project tab in the navbar
+-select the Sprint view
+-select add new task in a sprint
+
+As a user I want to be able to arrange my sprints into projects.
+-click on the Project tab in the navbar
+-select the Sprint view
+-select Add New Sprint button in desired project
+
+As a user I want to be able to log in so my lists are secure.
+-Website starts on the login page
+-enter credentials
+
+As a user I want to be able to create a list of tasks then assign them to sprints after.
+-Add task
+-Navigate to Sprint view
+-select the sprint you want to attach in dropdown
+
+
+As a user I want to be able to change how my tasks are sorted.
+-select views on the drop down
+
+User stories[V1.2]:
+As a user I want to be able to share projects and assign tasks to users.
+As a user I want to be able to start and end sprints in a project.
+
+User stories[V1.2]:
+As a user I want to be able to drag and drop tasks into a unique order and have that be stored.
+As a user I want to be able to drag and drop sprints into a unique order and have that be stored.
+As a user I want to be able to drag and drop projects into a unique order and have that be stored.
+
+User stories[V1.3]:
+As a user I want task dependencies.
+As a user I want sprint dependencies.
+As a user I want a view of my dependencies.
+
+User stories[V1.4]:
