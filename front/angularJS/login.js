@@ -1,4 +1,4 @@
-app.controller('loginCtrl', function($scope, $http)
+app.controller('loginCtrl', function($scope, $http, sVars)
 {
     $scope.createNAcc = false;
     let URL_ROOT = sVars.getURL();
